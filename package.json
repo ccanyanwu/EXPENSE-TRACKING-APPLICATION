@@ -1,0 +1,32 @@
+{
+  "name": "starter-kit",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "DEBUG=express-sequelize node ./bin/www",
+    "start-dev": "cross-env DEBUG=express-sequelize nodemon ./bin/www",
+    "test": "npm run test-unit && npm run test-integration",
+    "test-unit": "cross-env NODE_ENV=test ./node_modules/.bin/mocha test/unit/*.test.js",
+    "test-integration": "cross-env NODE_ENV=test ./node_modules/.bin/mocha test/integration/*.test.js"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "morgan": "^1.7.0",
+    "pg": "^6.1.0",
+    "pug": "^2.0.0-rc.4",
+    "sequelize": "^3.23.6",
+    "sequelize-cli": "^3.1.0",
+    "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "cross-env": "^3.2.4",
+    "expect.js": "^0.3.1",
+    "mocha": "^3.0.2",
+    "nodemon": "^2.0.2",
+    "supertest": "^2.0.0"
+  }
+}
