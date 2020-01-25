@@ -10,14 +10,14 @@ module.exports = {
   dev: {
     username: "manifestUser",
     password: "manifestPassword",
-    database: "postgres",
+    database: "blogapp",
     host: "manifestdbinstance.cgq0reqixqsd.us-east-1.rds.amazonaws.com",
     dialect: 'postgres' 
   },
   production: {
     username: "manifestUser",
     password: "manifestPassword",
-    database: "postgres",
+    database: "blogapp",
     host: "manifestdbinstance.cgq0reqixqsd.us-east-1.rds.amazonaws.com",
     dialect: 'postgres' 
   }
