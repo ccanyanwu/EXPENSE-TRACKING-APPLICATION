@@ -1,0 +1,40 @@
+<%- contentFor('main-content') %>
+
+<!-- Delete this div tag once you complete the task below -->
+<!-- start delete here-->
+<div class="col-sm-8">    
+        <div class="jumbotron">
+            <h1><%= title %></h1>
+            <p>The main content of the page goes here</p>
+  </div>
+</div>
+<!--end delete here -->
+
+<!--Make sure you complete the task before deleting the div tag-->
+
+<!-- Write a logic that will dynamically change the content of this page based on controller parameters -->
+<!-- for instance we know that the controller passes a variable called title -->
+<!--Use this title to change the content of each page based on the route-->
+<!--All content should be placed here for now-->
+<!--Tomorrow we are going to implement a cleaner dynamic content pages-->
+
+<!--This is an example of what you are expected to do here-->
+<% if (title == 'Create Post') { %>
+    <!--Content expected for create post here-->
+<% } else if (title == 'Delete Post') { %>
+    <!--Content for delete post here-->
+<% } else if (title == 'Post Details') { %>
+    <!--Content for post details here-->
+<% } else { %>
+    <!--<div class="col-sm-8">    -->
+    <!--    <div class="jumbotron">-->
+    <!--        <h1><#%= title %></h1>-->
+    <!--        <p>The main content of the page goes here</p>-->
+    <!--    </div>-->
+    <!--</div>-->
+<% } %>
+<!--do this for all the routes-->
+<!--This is how you will dynamically change the content on the main page-->
+<!--we already know that left and right side bar are mostly constant-->
+
+
