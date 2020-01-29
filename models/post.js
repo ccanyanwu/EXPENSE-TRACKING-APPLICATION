@@ -1,9 +1,9 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Post = sequelize.define('Post', {
-    title: DataTypes.STRING
+    post_title: DataTypes.STRING,
+    post_body: DataTypes.STRING,
   });
-
   return Post;
 };
 

@@ -1,38 +1,106 @@
 <%- contentFor('main-content') %>
 
-<!-- Delete this div tag once you complete the task below -->
-<!-- start delete here-->
-<div class="col-sm-8">    
-        <div class="jumbotron">
-            <h1><%= title %></h1>
-            <p>The main content of the page goes here</p>
-  </div>
-</div>
-<!--end delete here -->
-
-<!--Make sure you complete the task before deleting the div tag-->
-
 <!-- Write a logic that will dynamically change the content of this page based on controller parameters -->
 <!-- for instance we know that the controller passes a variable called title -->
 <!--Use this title to change the content of each page based on the route-->
 <!--All content should be placed here for now-->
 <!--Tomorrow we are going to implement a cleaner dynamic content pages-->
-
+ 
 <!--This is an example of what you are expected to do here-->
+
+<!--POST VIEW STARTS HERE -->
 <% if (title == 'Create Post') { %>
-    <!--Content expected for create post here-->
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="" method="post">
+              Post Title:<br>
+              <input type="text" name="post_title" value="Post Title">
+              <br>
+              Post Body:<br>
+              <input type="text" name="post_body" value="Post Body">
+              <br><br>
+              <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
 <% } else if (title == 'Delete Post') { %>
-    <!--Content for delete post here-->
+     
+<% } else if (title == 'Update Post') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="/blog/post/<%= post.id %>/update" method="post">
+              Post Title:<br>
+              <input type="text" name="post_title" value="<%= post.post_title %>">
+              <br>
+              Post Body:<br>
+              <input type="text" name="post_body" value="<%= post.post_body %>">
+              <br><br>
+              <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
 <% } else if (title == 'Post Details') { %>
-    <!--Content for post details here-->
+    <div class="col-sm-8">    
+        <div class="">
+             <h1>Details of a Single post</h1>
+             <p>I am a post for this ID = <%= post.id %></p>
+             <p>Post Title: <%= post.post_title %></p>
+             <p>Post Body:  <%= post.post_body %></p>
+             <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+        </div>
+    </div>
+<% } else if (title == 'Post List') { %>
+    <div class="col-sm-8">    
+        <div class="">
+        <ol>
+        <% posts.forEach(function(post) { %>
+                <li>
+                    <h4><a href="/blog/post/<%= post.id %>"><%= post.post_title %></a></h4>
+                    <p>The main body of the post <%= post.post_body %></p>
+                     <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+                </li>
+            <br/>
+        <% }); %>
+        </ol>
+    </div>
+    </div>
 <% } else { %>
-    <!--<div class="col-sm-8">    -->
-    <!--    <div class="jumbotron">-->
-    <!--        <h1><#%= title %></h1>-->
-    <!--        <p>The main content of the page goes here</p>-->
-    <!--    </div>-->
-    <!--</div>-->
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <h1><%= title %></h1>
+            <p>The main content of the page goes here</p>
+        </div>
+    </div>
 <% } %>
+<!--POST VIEW END HERE-->
+
+<!--AUTHOR VIEW STARTS HERE -->
+<!--complete logic for author view-->
+<% if (title == 'Create Author') { %>
+ 
+<% } else if (title == 'Delete Author') { %>
+     
+<% } else if (title == 'Update Author') { %>
+   
+<% } else if (title == 'Author Details') { %>
+ 
+<% } else if (title == 'Author List') { %>
+  
+<% } else { %>
+  
+<% } %>
+<!--AUTHOR VIEW END HERE-->
+
+<!--COMMENT VIEW STARTS HERE-->
+<!--complete logic for category view-->
+
+<!--COMMENT VIEW END HERE-->
+
+<!--CATEGORY VIEW START HERE-->
+<!--complete logic for category view-->
+<!--CATEGORY VIEW END HERE-->
+
+
 <!--do this for all the routes-->
 <!--This is how you will dynamically change the content on the main page-->
 <!--we already know that left and right side bar are mostly constant-->
