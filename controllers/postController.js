@@ -5,8 +5,13 @@ var async = require('async');
 // Display post create form on GET.
 exports.post_create_get = function(req, res, next) {
         // renders a post form
-        res.render('forms/post_form', { title: 'Create Post', layout: 'layouts/detail'});
+        models.Author.findAll().then(
+            function(authors){
+        console.log(authors);
+        res.render('forms/post_form', { title: 'Create Post', authors: authors, layout: 'layouts/detail'});
         console.log("Post form renders successfully");
+        });
+        
 };
 
 // Handle post create on POST.
@@ -125,6 +130,7 @@ exports.post_update_post = function(req, res, next) {
 exports.post_detail = function(req, res, next) {
         // find a post by the primary key Pk
         models.Post.findById(
+            
                 req.params.post_id,
                 {
                     include: models.Comment,

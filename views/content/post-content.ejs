@@ -10,8 +10,14 @@
               <input type="text" name="post_body" value="Post Body">
               <br><br>
               Author:<br>
-              <input type="text" name="author_id" value="1">
+              <select>
+                <% authors.forEach(function(author) { %>
+                    <option value="<%= author.id %>"><%= author.first_name %> </option>
+                    <br/>
+                <% }); %>
+                </select>
               <br><br>
+            
               Category:<br>
               <input type="text" name="category_id" value="1">
               <br><br>
