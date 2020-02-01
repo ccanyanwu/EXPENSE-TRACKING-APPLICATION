@@ -1,0 +1,52 @@
+<!--COMMENT VIEW STARTS HERE-->
+<!--complete logic for category view-->
+<% if (title == 'Create Comment') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            
+        </div>
+    </div>
+<% } else if (title == 'Delete Comment') { %>
+     
+<% } else if (title == 'Update Comment') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="/blog/comment/<%= comment.id %>/update" method="post">
+              Comment Title:<br>
+              <input type="text" name="comment_title" value="<%= comment.comment_title %>">
+              <br><br>
+              Comment Body:<br>
+              <input type="text" name="comment_body" value="<%= comment.comment_body %>">
+              <br><br>
+              <input type="submit" value="Update Comment">
+            </form>
+        </div>
+    </div>
+<% } else if (title == 'Comment Details') { %>
+    <div class="col-sm-8">    
+        <div class="">
+             <h1>Details of a Single comment</h1>
+             <p>I am an comment for this ID = <%= comment.id %></p>
+             <p>Comment title Name: <%= comment.comment_title %></p>
+             <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
+        </div>
+    </div>
+<% } else if (title == 'Comment List') { %>
+    <div class="col-sm-8">    
+        <div class="">
+        <ol>
+        <% comments.forEach(function(comment) { %>
+                <li>
+                    <h4><a href="/blog/comment/<%= comment.id %>"><%= comment.comment_title %></a></h4>
+                    <p>The main body of the comment <%= comment.comment_body %></p>
+                     <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
+                </li>
+            <br/>
+        <% }); %>
+        </ol>
+    </div>
+    </div>
+<% } else { %>
+
+<% } %>
+<!--COMMENT VIEW END HERE-->

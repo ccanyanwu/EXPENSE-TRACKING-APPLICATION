@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
     }},
   });
 
+  // create association between author and post
+  // an author can have many posts
+  Author.associate = function(models) {
+    models.Author.hasMany(models.Post);
+  };
+  
   return Author;
 };
  

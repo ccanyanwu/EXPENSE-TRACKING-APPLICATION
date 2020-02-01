@@ -1,5 +1,6 @@
-var Post = require('../models/post');
 var models = require('../models');
+
+var async = require('async');
 
 // Display post create form on GET.
 exports.post_create_get = function(req, res, next) {
@@ -9,19 +10,47 @@ exports.post_create_get = function(req, res, next) {
 };
 
 // Handle post create on POST.
-exports.post_create_post = function(req, res, next) {
+exports.post_create_post = async function( req, res, next) {
 
      // create a new post based on the fields in our post model
      // I have create two fields, but it can be more for your model
-      models.Post.create({
+     
+     const post = await models.Post.create({
             post_title: req.body.post_title,
-            post_body: req.body.post_body
-        }).then(function() {
-            console.log("Post created successfully");
-           // check if there was an error during post creation
-            res.redirect('/blog/posts');
-      });
+            post_body: req.body.post_body,
+            AuthorId: req.body.author_id
+     } 
+     );
+        
+     console.log("The saved post " + post.id);
+     
+     const category = await models.Category.findById(req.body.category_id);
+     
+     if (!category) {
+          return res.status(400);
+     }
+
+     // ok category exist
+     console.log("This is the category name we entered in front end " + category.name)
+    
+    const post_category = {
+      post_id: post.id,
+      category_id: category.id
+    };
+    
+     // Create and save a productOrder
+    //  const ProductCategorySaved = await models.PostCategory.create(post_category);
+     await post.addCategory(category);
+
+     console.log("Post created successfully");
+     // check if there was an error during post creation
+     res.redirect('/blog/posts');
+         
 };
+
+//  Promise.all([User.create(), City.create()])
+//     .then(([user, city]) => UserCity.create({userId: user.id, cityId: city.id}))
+
 
 // Display post delete form on GET.
 exports.post_delete_get = function(req, res, next) {
@@ -96,20 +125,36 @@ exports.post_update_post = function(req, res, next) {
 exports.post_detail = function(req, res, next) {
         // find a post by the primary key Pk
         models.Post.findById(
-                req.params.post_id
+                req.params.post_id,
+                {
+                    include: models.Comment,
+                    
+                }
+                
         ).then(function(post) {
         // renders an inividual post details page
         res.render('pages/post_detail', { title: 'Post Details', post: post, layout: 'layouts/detail'} );
         console.log("Post deteials renders successfully");
         });
 };
-
-
+ 
 // Display list of all posts.
 exports.post_list = function(req, res, next) {
         // controller logic to display all posts
-        models.Post.findAll(
-        ).then(function(posts) {
+        models.Post.findAll({
+              // Make sure to include the products
+                include: [{
+                  model: models.Category,
+                  as: 'categories',
+                  required: false,
+                  // Pass in the Product attributes that you want to retrieve
+                  attributes: ['id', 'name'],
+                  through: {
+                    // This block of code allows you to retrieve the properties of the join table
+                    model: models.PostCategory 
+                  }
+                }]
+        }).then(function(posts) {
         // renders a post list page
         console.log("rendering post list");
         res.render('pages/post_list', { title: 'Post List', posts: posts, layout: 'layouts/list'} );
@@ -121,23 +166,34 @@ exports.post_list = function(req, res, next) {
 // This is the blog homepage.
 exports.index = function(req, res) {
 
-      // find the count of posts in database
+      
+   // find the count of posts in database
       models.Post.findAndCountAll(
-      ).then(function(postCount) {
-          
+      ).then(function(postCount)
+      {
+        models.Author.findAndCountAll(
+      ).then(function(authorCount)
+      {
+        models.Comment.findAndCountAll(
+      ).then(function(commentCount)
+      {
+        models.Category.findAndCountAll(
+      ).then(function(categoryCount)
+      {
        
-        // find the count of authors in database
+        
  
-        // find the count of comments in database
- 
-        // find the count of categories in database
- 
-        res.render('pages/index', {title: 'Homepage', postCount: postCount, layout: 'layouts/main'});
+        res.render('pages/index', {title: 'Homepage', postCount: postCount, authorCount: authorCount, commentCount: commentCount, categoryCount: categoryCount, layout: 'layouts/main'});
         
         // res.render('pages/index_list_sample', { title: 'Post Details', layout: 'layouts/list'});
         // res.render('pages/index_detail_sample', { page: 'Home' , title: 'Post Details', layout: 'layouts/detail'});
 
-      })
+      });
+      });
+      });
+      });
+       
+      
     
     
     };

@@ -1,0 +1,68 @@
+<!--AUTHOR VIEW STARTS HERE -->
+<!--complete logic for author view-->
+<% if (title == 'Create Author') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="" method="post">
+              Author First Name:<br>
+              <input type="text" name="first_name" value="Author First Name">
+              <br><br>
+              Author Last Name:<br>
+              <input type="text" name="last_name" value="Author Last Name">
+              <br><br>
+               Author Email Address:<br>
+              <input type="email" name="email" value="hello@manifest.com">
+              <br><br>
+              <input type="submit" value="Create Author">
+            </form>
+        </div>
+    </div>
+<% } else if (title == 'Delete Author') { %>
+     
+<% } else if (title == 'Update Author') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="/blog/author/<%= author.id %>/update" method="post">
+               Author First Name:<br>
+              <input type="text" name="first_name" value="<%= author.first_name %>">
+              <br><br>
+              Author Last Name:<br>
+              <input type="text" name="last_name" value="<%= author.last_name %>">
+              <br><br>
+               Author Email Address:<br>
+              <input type="email" name="email" value="<%= author.email %>">
+              <br><br>
+              <input type="submit" value="Update Author">
+            </form>
+        </div>
+    </div>
+<% } else if (title == 'Author Details') { %>
+    <div class="col-sm-8">    
+        <div class="">
+             <h1>Details of a Single author</h1>
+             <p>I am an author for this ID = <%= author.id %></p>
+             <p>Author First Name: <%= author.first_name %></p>
+             <p>Author Last Name:  <%= author.last_name %></p>
+             <p>Author Email Address:  <%= author.email %></p>
+             <a href="/blog/author/<%= author.id %>/update">Edit  Author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete Author</a>
+        </div>
+    </div>
+<% } else if (title == 'Author List') { %>
+    <div class="col-sm-8">    
+        <div class="">
+        <ol>
+        <% authors.forEach(function(author) { %>
+                <li>
+                    <h4><a href="/blog/author/<%= author.id %>"><%= author.first_name %></a></h4>
+                    <p>The main body of the author <%= author.last_name %>, <%= author.email %></p>
+                     <a href="/blog/author/<%= author.id %>/update">Edit  Author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete Author</a>
+                </li>
+            <br/>
+        <% }); %>
+        </ol>
+    </div>
+    </div>
+<% } else { %>
+
+<% } %>
+<!--AUTHOR VIEW END HERE-->

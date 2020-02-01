@@ -1,0 +1,99 @@
+<!--POST VIEW STARTS HERE -->
+<% if (title == 'Create Post') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="" method="post">
+              Post Title:<br>
+              <input type="text" name="post_title" value="Post Title">
+              <br><br/>
+              Post Body:<br>
+              <input type="text" name="post_body" value="Post Body">
+              <br><br>
+              Author:<br>
+              <input type="text" name="author_id" value="1">
+              <br><br>
+              Category:<br>
+              <input type="text" name="category_id" value="1">
+              <br><br>
+              <input type="submit" value="Create Post">
+            </form>
+        </div>
+    </div>
+<% } else if (title == 'Delete Post') { %>
+     
+<% } else if (title == 'Update Post') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="/blog/post/<%= post.id %>/update" method="post">
+              Post Title:<br>
+              <input type="text" name="post_title" value="<%= post.post_title %>">
+              <br>
+              Post Body:<br>
+              <input type="text" name="post_body" value="<%= post.post_body %>">
+              <br>
+              Post Category:<br>
+              <input type="text" name="category_id" value="1">
+              <br><br>
+              <input type="submit" value="Update Post">
+            </form>
+        </div>
+    </div>
+<% } else if (title == 'Post Details') { %>
+    <div class="col-sm-8">    
+        <div class="">
+        
+            <h1>Details of a Single post</h1>
+            <p>I am a post for this ID = <%= post.id %></p>
+            <p>Post Title: <%= post.post_title %></p>
+            <p>Post Body:  <%= post.post_body %></p>
+            </p> Category: DISPLAY CATEGORY HERE </p>
+            <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+        
+       
+        <h2>All Comments on this Post</h2>
+        <div class="">
+            <ol>
+            <% post.Comments.forEach(function(comment) { %>
+                    <li>
+                        <p><%= comment.comment_body %>
+                            --- <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
+                        </p>
+                    </li>
+                <br/>
+            <% }); %>
+            </ol>
+        </div>    
+            
+        <!--Form to post comment-->
+        <h1>POST A NEW COMMENT </h1>
+        <form action="/blog/comment/create" method="post">
+              Comment Title:<br>
+              <input type="text" name="comment_title" value="Comment Title">
+              <br><br>
+              Comment Body:<br>
+              <input type="text" name="comment_body" value="Comment Body">
+              <br><br>
+              <input type="hidden" name="post_id" value="<%= post.id %>">
+              <input type="submit" value="Create Comment">
+        </form>
+        </div>
+    </div>
+<% } else if (title == 'Post List') { %>
+    <div class="col-sm-8">    
+        <div class="">
+            <ol>
+            <% posts.forEach(function(post) { %>
+                    <li>
+                        <h4><a href="/blog/post/<%= post.id %>"><%= post.post_title %></a></h4>
+                        <p>The main body of the post <%= post.post_body %> | Category: DISPLAY CATEGORY HERE </p>
+                         <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+                    </li>
+                <br/>
+            <% }); %>
+            </ol>
+        </div>
+    </div>
+<% } else { %>
+
+<% } %>
+<!--POST VIEW END HERE-->
