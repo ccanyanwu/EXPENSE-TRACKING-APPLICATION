@@ -11,6 +11,7 @@ var comment_controller = require('../controllers/commentController');
 
 /// POST ROUTES ///
 
+
 // GET request for creating a Post. NOTE This must come before routes that display Post (uses id).
 router.get('/post/create', post_controller.post_create_get);
 

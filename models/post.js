@@ -10,12 +10,15 @@ module.exports = (sequelize, DataTypes) => {
   // a post will have an author
   // a field called AuthorId will be created in our post table inside the db
   Post.associate = function (models) {
+    
     models.Post.belongsTo(models.Author, {
       onDelete: "CASCADE",
       foreignKey: {
         allowNull: false
       }
     });
+    
+    
     models.Post.belongsToMany(models.Category,{ 
       as: 'categories', 
       through: 'PostCategories',
