@@ -39,13 +39,70 @@
 <% } else if (title == 'Author Details') { %>
     <div class="col-sm-8">    
         <div class="">
-             <h1>Details of a Single author</h1>
+             <h1>Details of a Single author - <%= author.first_name %> <%= author.last_name %> </h1>
              <p>I am an author for this ID = <%= author.id %></p>
              <p>Author First Name: <%= author.first_name %></p>
              <p>Author Last Name:  <%= author.last_name %></p>
              <p>Author Email Address:  <%= author.email %></p>
              <a href="/blog/author/<%= author.id %>/update">Edit  Author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete Author</a>
+        
+        <% if(author.Posts.length == 0) { %>
+            <h2>There are no posts by this author yet </h2>
+        <% } else { %>
+            <h2>All Posts by this Author</h2>
+            <div class="">
+                <ol>
+                <% author.Posts.forEach(function(post) { %>
+                        <li>
+                            <p> 
+                                <a href="/blog/post/<%= post.id %>"><%= post.post_title %></a>
+                                 <br/>
+                                <%= post.post_body %>
+                                <br/> <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+                            </p>
+                        </li>
+                    <br/>
+                <% }); %>
+                </ol>
+            </div>    
+         <% } %>   
         </div>
+        
+        <h2>Create new post for this author </h2>
+        <!--DISPLAY CREATE FORM IN AUTHOR-->
+        
+        <!--YOU CAN ALSO MOVE THIS TO ANY ROUTE IF YOU WANT-->
+        
+        <form action="/blog/post/create" method="post">
+              Post Title:<br>
+              <input type="text" name="post_title" value="Post Title">
+              <br><br/>
+              Post Body:<br>
+              <input type="text" name="post_body" value="Post Body">
+              <br><br>
+              
+              <!--I DONT NEED TO LIST AUTHORS AGAIN - BECAUSE I AM ON A SINGLE AUTHOR PAGE, I WILL -->
+              <!--PASS THE AUTHOR ID AUTOMATICALLY WITH FORM INPUTS USING THE HIDDEN FIELD -->
+              <!--Author:<br>-->
+              <!-- <select name = "author_id">-->
+              <!--      <#% authors.forEach(function(author) { %>-->
+              <!--      <option  value="<#%= author.id %>"><#%= author.first_name %></option>-->
+              <!--  <br/>-->
+              <!-- <#% }); %>-->
+              <!--  </select>-->
+              <input type="hidden" name="author_id" value="<%= author.id %>">
+              Category:<br>
+                <div>
+                     <% categories.forEach(function(category) { %>
+                    <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+                    <label for="<%= category.name %>"><%= category.name %></label>
+                    
+                <br/>
+               <% }); %>
+                 </div>
+              <br>
+              <input type="submit" value="Create Post" onClick="checkCat()">
+             </form>
     </div>
 <% } else if (title == 'Author List') { %>
     <div class="col-sm-8">    
@@ -66,3 +123,19 @@
 
 <% } %>
 <!--AUTHOR VIEW END HERE-->
+<script>
+    function checkCat() {
+    var checkBoxes = document.getElementsByClassName( 'categoryCheckbox' );
+    var isChecked = false;
+    for (var i = 0; i < checkBoxes.length; i++) {
+        if ( checkBoxes[i].checked ) {
+            isChecked = true;
+        };
+    };
+    if ( isChecked ) {
+        
+        } else {
+            alert( 'Please, check at least one checkbox!' );
+        }   
+}
+</script>

@@ -2,9 +2,9 @@ var Author = require('../models/author');
 var models = require('../models');
 
 // Display author create form on GET.
-exports.author_create_get = function(req, res, next) {
+exports.author_create_get =  function(req, res, next) {
         // create author GET controller logic here 
-        res.render('forms/author_form', { title: 'Create Author',  layout: 'layouts/detail'});
+        res.render('forms/author_form', { title: 'Create Author',    layout: 'layouts/detail'});
 };
 
 // Handle author create on POST.
@@ -96,11 +96,21 @@ exports.author_list = function(req, res, next) {
 };
 
 // Display detail page for a specific author.
-exports.author_detail = function(req, res, next) {
+exports.author_detail = async function(req, res, next) {
+            
+         const categories = await models.Category.findAll();
+         
          models.Author.findById(
-                req.params.author_id
+                req.params.author_id, {
+                include: [
+                    {
+                      model: models.Post
+                    }
+                         ]
+                }
         ).then(function(author) {
-        res.render('pages/author_detail', { title: 'Author Details', author: author, layout: 'layouts/detail'} );
+        console.log(author);
+        res.render('pages/author_detail', { title: 'Author Details', categories: categories, author: author, layout: 'layouts/detail'} );
         console.log("Author deteials renders successfully");
         });
 };

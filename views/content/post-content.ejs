@@ -40,14 +40,21 @@
             <form action="/blog/post/<%= post.id %>/update" method="post">
               Post Title:<br>
               <input type="text" name="post_title" value="<%= post.post_title %>">
-              <br>
+              <br><br/>
               Post Body:<br>
               <input type="text" name="post_body" value="<%= post.post_body %>">
+              <br/><br/>
+              Category:<br>
+                <div>
+                     <% categories.forEach(function(category) { %>
+                    <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+                    <label for="<%= category.name %>"><%= category.name %></label>
+                    
+                <br/>
+               <% }); %>
+                 </div>
               <br>
-              Post Category:<br>
-              <input type="text" name="category_id" value="1">
-              <br><br>
-              <input type="submit" value="Update Post">
+              <input type="submit" value="Update Post" onClick="checkCat()">
             </form>
         </div>
     </div>
@@ -55,28 +62,33 @@
     <div class="col-sm-8">    
         <div class="">
         
-            <h1>Details of a Single post</h1>
+            <h1>Post Details - <%= post.post_title %>  </h1>
             <p>I am a post for this ID = <%= post.id %></p>
             <p>Post Title: <%= post.post_title %></p>
             <p>Post Body:  <%= post.post_body %></p>
-            </p> Category: DISPLAY CATEGORY HERE </p>
+            <p>
+            <b>Posted by Author: </b> <%= post.Author.first_name %> <%= post.Author.last_name %> <br/>
+            <b>Inside Categories:</b> <% post.categories.forEach(function(category) { %>  <a href="/blog/category/<%= category.id %>/"> <%= category.name %> </a>  <% }); %>
+            </p>
             <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
-        
-       
-        <h2>All Comments on this Post</h2>
-        <div class="">
-            <ol>
-            <% post.Comments.forEach(function(comment) { %>
-                    <li>
-                        <p><%= comment.comment_body %>
-                            --- <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
-                        </p>
-                    </li>
-                <br/>
-            <% }); %>
-            </ol>
-        </div>    
-            
+
+        <% if(post.Comments.length == 0) { %>
+            <h2>There are no comments for this post yet </h2>
+        <% } else { %>
+            <h2>All Comments on this Post</h2>
+            <div class="">
+                <ol>
+                <% post.Comments.forEach(function(comment) { %>
+                        <li>
+                            <p><%= comment.comment_body %>
+                                --- <a href="/blog/comment/<%= comment.id %>/update">Edit  Comment</a> | <a href="/blog/comment/<%= comment.id %>/delete">Delete Comment</a>
+                            </p>
+                        </li>
+                    <br/>
+                <% }); %>
+                </ol>
+            </div>    
+         <% } %>   
         <!--Form to post comment-->
         <h1>POST A NEW COMMENT </h1>
         <form action="/blog/comment/create" method="post">
@@ -98,7 +110,11 @@
             <% posts.forEach(function(post) { %>
                     <li>
                         <h4><a href="/blog/post/<%= post.id %>"><%= post.post_title %></a></h4>
-                        <p>The main body of the post <%= post.post_body %> | Category: DISPLAY CATEGORY HERE </p>
+                        <p>The main body of the post <%= post.post_body %> <br/>
+                        <b>Posted by Author: </b> <%= post.Author.first_name %> <%= post.Author.last_name %> <br/>
+                         <!--Category: DISPLAY CATEGORY HERE -->
+                         <b>Inside Categories: </b> <% post.categories.forEach(function(category) { %>  <a href="/blog/category/<%= category.id %>/"> <%= category.name %> </a>  <% }); %>
+                        </p>
                          <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
                     </li>
                 <br/>

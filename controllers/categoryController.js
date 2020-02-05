@@ -98,7 +98,24 @@ exports.category_detail = function(req, res, next) {
 
         // find a post by the primary key Pk
         models.Category.findById(
-                req.params.category_id
+                req.params.category_id,
+                {
+                    include: [
+                     {
+                          model: models.Post,
+                          as: 'posts',
+                          required: false,
+                          // Pass in the Category attributes that you want to retrieve
+                          attributes: ['id', 'post_title', 'post_body'],
+                          through: {
+                            // This block of code allows you to retrieve the properties of the join table PostCategories
+                            model: models.PostCategories,
+                            as: 'postCategories',
+                            attributes: ['post_id', 'category_id'],
+                        }
+                    }
+                ]
+              }
         ).then(function(category) {
         // renders an inividual category details page
         res.render('pages/category_detail', { title: 'Category Details', category: category, layout: 'layouts/detail'} );
@@ -111,6 +128,23 @@ exports.category_detail = function(req, res, next) {
 exports.category_list = function(req, res, next) {
         // controller logic to display all categories
         models.Category.findAll(
+              {
+                    include: [
+                     {
+                          model: models.Post,
+                          as: 'posts',
+                          required: false,
+                          // Pass in the Category attributes that you want to retrieve
+                          attributes: ['id', 'post_title', 'post_body'],
+                          through: {
+                            // This block of code allows you to retrieve the properties of the join table PostCategories
+                            model: models.PostCategories,
+                            as: 'postCategories',
+                            attributes: ['post_id', 'category_id'],
+                        }
+                    }
+                ]
+              }
         ).then(function(categories) {
         // renders a post list page
         console.log("rendering category list");

@@ -27,11 +27,30 @@
 <% } else if (title == 'Category Details') { %>
     <div class="col-sm-8">    
         <div class="">
-             <h1>Details of a Single category</h1>
+             <h1>Details of a Single category - <%= category.name %></h1>
              <p>I am an category for this ID = <%= category.id %></p>
              <p>Category Name: <%= category.name %></p>
              <a href="/blog/category/<%= category.id %>/update">Edit  Category</a> | <a href="/blog/category/<%= category.id %>/delete">Delete Category</a>
         </div>
+        
+        <% if(category.posts.length == 0) { %>
+            <h2>There are no posts under this category yet </h2>
+        <% } else { %>
+            <h2>All Posts in this Category</h2>
+            <div class="">
+                <ol>
+                <% category.posts.forEach(function(post) { %>
+                        <li>
+                            <p><%= post.post_title %>
+                               <%= post.post_body %>
+                                <br/><a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+                            </p>
+                        </li>
+                    <br/>
+                <% }); %>
+                </ol>
+            </div>    
+         <% } %>  
     </div>
 <% } else if (title == 'Category List') { %>
     <div class="col-sm-8">    
