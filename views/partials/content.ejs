@@ -1,21 +1,20 @@
 <%- contentFor('main-content') %>
 
-<!-- Write a logic that will dynamically change the content of this page based on controller parameters -->
-<!-- for instance we know that the controller passes a variable called title -->
-<!--Use this title to change the content of each page based on the route-->
-<!--All content should be placed here for now-->
-<!--Cleaner View Code - Everything has been seprated -->
-
+<!--CATEGORY CONTENT-->
+<%- include ('../content/category-content') %>
+<!--DEPARTMENT CONTENT-->
+<%- include ('../content/department-content') %>
+<!--EMPLOYEE CONTENT-->
+<%- include ('../content/employee-content') %>
+<!--EXPENSE CONTENT-->
+<%- include ('../content/expense-content') %>
 <!--POST CONTENT-->
 <%- include ('../content/post-content') %>
+<!--TYPE CONTENT-->
+<%- include ('../content/type-content') %>
 <!--AUTHOR CONTENT-->
 <%- include ('../content/author-content') %>
 <!--COMMENT CONTENT-->
 <%- include ('../content/comment-content') %>
-<!--CATEGORY CONTENT-->
-<%- include ('../content/category-content') %>
-
-<!--This is how you will dynamically change the content on the main page-->
-<!--we already know that left and right side bar are mostly constant-->
 
 

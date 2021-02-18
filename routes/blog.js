@@ -117,7 +117,7 @@ router.get('/comment/:comment_id', comment_controller.comment_detail);
 router.get('/comments', comment_controller.comment_list);
 
 // GET blog home page.
-router.get('/', post_controller.index); 
+//router.get('/', post_controller.index); 
 
 // export all the router created
 module.exports = router;

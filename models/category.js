@@ -1,23 +1,21 @@
+
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Category = sequelize.define('Category', {
-    name: DataTypes.STRING
+    name: { 
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+        notEmpty: true,
+        } 
+    }
   });
- 
-  // create association between category and post
-  // an category can have many posts
-  Category.associate = function(models) {
-    models.Category.belongsToMany(models.Post,{ 
-      as: 'posts', 
-      through: 'PostCategories',
-      foreignKey: 'category_id'
-    });
+
+  //create association between category and expense
+  // a category can have more than 1 expense
+  Category.associate = (models) => {
+    models.Category.hasMany(models.Expense);
   };
-  
+
   return Category;
 };
-
- 
-
-
-// Make sure you complete other models fields

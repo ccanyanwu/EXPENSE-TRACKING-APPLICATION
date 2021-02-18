@@ -18,9 +18,8 @@ exports.category_create_post = function(req, res, next) {
       models.Category.create({
             name: req.body.name 
         }).then(function() {
-            console.log("Category created successfully");
            // check if there was an error during post creation
-            res.redirect('/blog/categories');
+            res.send('/categories');
       });
 };
 

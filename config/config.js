@@ -8,26 +8,22 @@ module.exports = {
     storage: ":memory:"
   },
   dev: {
-    username: "manifestUser",
-    password: "manifestPassword",
-    database: "blogapp",
-    host: "manifestdbinstance.cgq0reqixqsd.us-east-1.rds.amazonaws.com",
+    username: "sgednfjo",
+    password: "OtGwpWeYvLU9X1QFoSsLyP_U5F84_arS",
+    database: "sgednfjo",
+    host: "ziggy.db.elephantsql.com",
     dialect: 'postgres' 
   },
   production: {
-    username: "manifestUser",
-    password: "manifestPassword",
-    database: "blogapp",
-    host: "manifestdbinstance.cgq0reqixqsd.us-east-1.rds.amazonaws.com",
+     
+    username: "pmnmnvlx",
+    password: "dLy4ghevBbyNvg9YnVIMoIHOJuDo5bOb",
+    database: "pmnmnvlx",
+    host: "ziggy.db.elephantsql.com",
     dialect: 'postgres' 
   }
-  // ,
-  // production: {
-  //   username: process.env.DB_USERNAME,
-  //   password: process.env.DB_PASSWORD,
-  //   database: process.env.DB_NAME,
-  //   host: process.env.DB_HOSTNAME,
-  //   dialect: 'mysql',
-  //   use_env_variable: 'DATABASE_URL'
-  // }
 };
+
+
+
+

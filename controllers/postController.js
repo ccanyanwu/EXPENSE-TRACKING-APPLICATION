@@ -27,15 +27,15 @@ exports.post_create_post = async function( req, res, next) {
     
     // const category = await models.Category.findById(req.body.category_id);
     
-    let cateoryList = req.body.categories;
+    let categoryList = req.body.categories;
     
     // check the size of the category list
-    console.log(cateoryList.length);
+    console.log(categoryList.length);
     
    
     // I am checking if only 1 category has been selected
     // if only one category then use the simple case scenario
-    if (cateoryList.length == 1) {
+    if (categoryList.length == 1) {
          // check if we have that category in our database
          const category = await models.Category.findById(req.body.categories);
          if (!category) {
@@ -148,15 +148,15 @@ exports.post_update_post = async function(req, res, next) {
 
         // const category = await models.Category.findById(req.body.category_id);
     
-        let cateoryList = req.body.categories;
+        let categoryList = req.body.categories;
     
         // check the size of the category list
-        console.log(cateoryList.length);
+        console.log(categoryList.length);
     
    
         // I am checking if only 1 category has been selected
         // if only one category then use the simple case scenario
-        if (cateoryList.length == 1) {
+        if (categoryList.length == 1) {
              // check if we have that category in our database
              const category = await models.Category.findById(req.body.categories);
              if (!category) {
