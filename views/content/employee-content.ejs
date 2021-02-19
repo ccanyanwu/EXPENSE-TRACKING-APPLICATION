@@ -42,17 +42,17 @@
 <% } else if (title == 'Update Employee') { %>
     <div class="col-sm-8">    
         <div class="jumbotron">
-            <form action="/blog/author/<%= author.id %>/update" method="post">
-               Author First Name:<br>
-              <input type="text" name="first_name" value="<%= author.first_name %>">
+            <form action="/employee/<%= employee.id %>/update" method="post">
+               USERNAME:<br>
+              <input type="text" name="username" value="<%= employee.username %>">
               <br><br>
-              Author Last Name:<br>
-              <input type="text" name="last_name" value="<%= author.last_name %>">
+              ROLE:<br>
+              <input type="text" name="role" value="<%= employee.role %>">
               <br><br>
-               Author Email Address:<br>
-              <input type="email" name="email" value="<%= author.email %>">
+               MOBILE:<br>
+              <input type="number" name="mobile" value="<%= employee.mobile %>">
               <br><br>
-              <input type="submit" value="Update Author">
+              <input type="submit" value="Update employee">
             </form>
         </div>
     </div>
@@ -65,7 +65,7 @@
              <p>Last Name:  <%= employee.last_name %></p>
              <p>Username:  <%= employee.username %></p>
              <p> <span class="text-capitalize"> <%= employee.role %></span> in the <%= employee.Department.name %> department. Contact <%= employee.username %> via email <%= employee.email %> or mobile - 0<%= employee.mobile %></p>
-             <a href="/blog/employee/<%= employee.id %>/update">Edit  employee</a> | <a href="/blog/employee/<%= employee.id %>/delete">Delete employee</a>
+             <a href="/employee/<%= employee.id %>/update">Edit  employee</a> | <a href="/employee/<%= employee.id %>/delete">Delete employee</a>
         
         <% if(employee.Expenses.length == 0) { %>
             <h2>You haven't added any expenditure yet </h2>
@@ -78,7 +78,7 @@
                             <p> 
                                 <a href="/employee/:employee_id/expense/<%= expense.id %>"><%= expense.details %></a>
                                  
-                                <br/> <a href="/employee/:employee_id/expense/<%= expense.id %>/update">Edit  Post</a> | <a href="/employee/:employee_id/expense/<%= expense.id %>/delete">Delete Post</a>
+                                <br/> <a href="/expense/<%= expense.id %>/update">Edit  Post</a> | <a href="/employee/:employee_id/expense/<%= expense.id %>/delete">Delete Post</a>
                             </p>
                         </li>
                     <br/>
@@ -102,13 +102,12 @@
         <% employees.forEach(function(employee) { %>
                 <li>
                     <h4 class="text-capitalize"><a href="/employee/<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></a></h4>
-                     <a href="/blog/employee/<%= employee.id %>/update">Edit  Employee</a> | <a href="/blog/employee/<%= employee.id %>/delete">Delete Employee</a>
+                     <a href="/employee/<%= employee.id %>/update">Edit  Employee</a> | <a href="/employee/<%= employee.id %>/delete">Delete Employee</a>
                 </li>
             <br/>
         <% }); %>
         </ol>
     </div>
-    <a href="/blog/author/create"> CLICK HERE TO CREATE AUTHOR</a>
     </div>
 <% } else { %>
 

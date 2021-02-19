@@ -23,33 +23,142 @@ exports.expense_create_get =  async (req, res, next) => {
           ]
           }
   ).then(function(employee) {
-    // renders an inividual employee details page
-    //console.log(department_id.name)
+    // renders an inividual expense details page
+    
     res.render('forms/expense_form', { title: 'Create Expense', categories:categories, employee: employee, types:types, layout: 'layouts/detail'} );
-    //console.log("Employee details renders successfully" + res.json(req.aprover));
+    
     });
-        
-        //res.render('forms/expense_form', { title: 'Create Expense', categories:categories, employees:employees, types:types, layout: 'layouts/detail'});
+        ;
 };
 
 // Handle expense create on POST.
 exports.expense_create_post = function(req, res, next) {
   let employee_id = req.body.employee_id;
-    // If an expense gets created successfully, we just redirect to expenses list
-    // no need to render a page
+    
+  //logic to check for amount 
+  let getAmount = req.body.amount,
+      getStatus = '';
+
+      if(getAmount < 1000){getStatus = 'Approved';}
+      else{getStatus = 'Pending'}
+    
      models.Expense.create({
-        //    createdAt: req.body.createdAt,
-        //    time: req.body.time,
            details: req.body.details,
            amount: req.body.amount,
            EmployeeId: req.body.employee_id,
            TypeId: req.body.type_id,
            CategoryId: req.body.category_id,
-           status: req.body.status,
+           status: getStatus,
 
        }).then(function() {
           
         //console.log("For the expense we have: " + moment(models.Expense.time).format('hh:mm A'), req.body.details, req.body.amount );
            res.redirect('/employee/' + employee_id);
      });
+};
+
+// Display Expense delete  GET.
+exports.expense_delete_post = function(req, res, next) {
+  models.Expense.destroy({
+     where: {
+      id: req.params.expense_id
+    }
+  }).then(function() {
+  
+    res.redirect('/expenses');
+    console.log("Expense deleted successfully");
+  });
+};
+
+// Display expense update form on GET.
+exports.expense_update_get = async (req, res, next) => {
+  console.log("ID is " + req.params.expense_id);
+  const types = await models.Type.findAll();
+  const categories = await models.Category.findAll();
+
+  models.Expense.findById(
+          req.params.expense_id
+  ).then(function(expense) {
+         // renders a post form
+         res.render('forms/expense_form', { title: 'Update Expense', categories:categories, expense: expense, types:types, layout: 'layouts/detail'});
+         console.log("Expense update get successful");
+    });
+};
+
+// Handle EXPENSE update on POST.
+exports.expense_update_post = function(req, res, next) {
+  // POST logic to update an expense here
+  console.log("ID is " + req.params.expense_id);
+  //logic for expense status
+  let getAmount = req.body.amount,
+      getStatus = '';
+
+      if(getAmount < 1000){getStatus = 'Approved';}
+      else{getStatus = 'Pending'}
+  models.Expense.update(
+  // Values to update
+      {
+          details: req.body.details,
+          amount: getAmount,
+          TypeId: req.body.type_id,
+          CategoryId: req.body.category_id,
+          status:getStatus
+      },
+    { // Clause
+          where: 
+          {
+              id: req.params.expense_id
+          }
+      } 
+   ).then(function() { 
+  
+          res.redirect("/expenses");  
+          console.log("Expense updated successfully");
+    });
+};
+
+// Display list of all expenses.
+exports.expense_list = (req, res, next) => {
+  
+  models.Expense.findAll({
+    include:[
+      {
+        model:models.Employee,
+        attributes: ['id', 'first_name']
+      }
+    ]
+  })
+  .then(function(expenses) {
+  // renders an employee list page
+  console.log("rendering expense list");
+  res.render('pages/expense_list', { title: 'Expense List', expenses: expenses, layout: 'layouts/list'} );
+  console.log(" list renders successfully");
+  });
+};
+
+// Display detail page for a specific expense.
+exports.expense_detail = (req, res, next) => {
+  models.Expense.findById(
+          req.params.expense_id, {
+          include: [
+            {
+              model: models.Employee,
+              attributes: ['id', 'first_name', 'last_name', 'role',]
+            },
+            {
+              model: models.Category,
+              attributes: ['id', 'name']
+            },
+            {
+              model: models.Type,
+              attributes: ['id', 'name']
+            }
+          ]
+          }
+  ).then((expense) => {
+  // renders an inividual employee details page
+  //console.log(department_id.name)
+  res.render('pages/employee_detail', { title: 'Expense Details',   expense: expense, moment: moment, layout: 'layouts/detail'} );
+  //console.log("Employee details renders successfully" + res.json(req.aprover));
+  });
 };

@@ -72,7 +72,7 @@ router.get('/category/create', category_controller.category_create_get);
 router.post('/category/create', category_controller.category_create_post);
 
 // GET request to delete Category.
-router.get('/category/:category_id/delete', category_controller.category_delete_get);
+//router.get('/category/:category_id/delete', category_controller.category_delete_get);
 
 // POST request to delete Category.
 router.post('/category/:category_id/delete', category_controller.category_delete_post);

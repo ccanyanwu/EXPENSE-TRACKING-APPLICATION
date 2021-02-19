@@ -16,7 +16,7 @@
 <% } else if (title == 'Update Category') { %>
     <div class="col-sm-8">    
         <div class="jumbotron">
-            <form action="/blog/category/<%= category.id %>/update" method="post">
+            <form action="/category/<%= category.id %>/update" method="post">
                Category Name:<br>
               <input type="text" name="name" value="<%= category.name %>">
               <br><br>
@@ -27,23 +27,23 @@
 <% } else if (title == 'Category Details') { %>
     <div class="col-sm-8">    
         <div class="">
-             <h1>Details of a Single category - <%= category.name %></h1>
+             <h1>Details of <%= category.name %> Category  </h1>
              <p>I am an category for this ID = <%= category.id %></p>
              <p>Category Name: <%= category.name %></p>
-             <a href="/blog/category/<%= category.id %>/update">Edit  Category</a> | <a href="/blog/category/<%= category.id %>/delete">Delete Category</a>
+             <a href="/category/<%= category.id %>/update">Edit  Category</a> | <a href="/category/<%= category.id %>/delete">Delete Category</a>
         </div>
         
-        <% if(category.posts.length == 0) { %>
-            <h2>There are no posts under this category yet </h2>
+        <% if(category.Expenses.length == 0) { %>
+            <h2>There are no expenses under this category yet </h2>
         <% } else { %>
-            <h2>All Posts in this Category</h2>
+            <h2>All Expenses in this Category</h2>
             <div class="">
                 <ol>
-                <% category.posts.forEach(function(post) { %>
+                <% category.Expenses.forEach(function(expense) { %>
                         <li>
-                            <p><%= post.post_title %>
-                               <%= post.post_body %>
-                                <br/><a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
+                            <p><%= expense.details %><br>
+                                Amount - &#8358;<%= expense.amount %><br>
+                                Status - <%= expense.status %><br>
                             </p>
                         </li>
                     <br/>
@@ -58,9 +58,8 @@
         <ol>
         <% categories.forEach(function(category) { %>
                 <li>
-                    <h4><a href="/blog/category/<%= category.id %>"><%= category.name %></a></h4>
-                    <p>The main body of the category <%= category.name %></p>
-                     <a href="/blog/category/<%= category.id %>/update">Edit  Category</a> | <a href="/blog/category/<%= category.id %>/delete">Delete Category</a>
+                    <h4><a href="/category/<%= category.id %>"><%= category.name %></a></h4>
+                     <a href="/category/<%= category.id %>/update">Edit  Category</a> | <a href="/category/<%= category.id %>/delete">Delete Category</a>
                 </li>
             <br/>
         <% }); %>
