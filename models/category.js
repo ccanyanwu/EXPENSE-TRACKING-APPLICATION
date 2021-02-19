@@ -2,13 +2,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Category = sequelize.define('Category', {
-    name: { 
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-        notEmpty: true,
-        } 
-    }
+    name: {type: DataTypes.STRING}
   });
 
   //create association between category and expense
