@@ -13,34 +13,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: sequelize.literal('NOW()')
     },
-    details: { 
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-        notEmpty: true,
-        } 
-    },
-    amount: { 
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        validate: {
-        notEmpty: true,
-        } 
-    },
-    /*approver: { 
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-        notEmpty: true,
-        } 
-    },*/
+    details: {type: DataTypes.STRING},
+    amount: {type: DataTypes.BIGINT},
     EmployeeId: {type: DataTypes.INTEGER},
     TypeId: {type: DataTypes.INTEGER},
     CategoryId: {type: DataTypes.INTEGER},
-    status: {
-      type: DataTypes.STRING,
-      /*defaultValue: 'pending',*/
-      },
+    status: {type: DataTypes.STRING},
   });
 
   Expense.associate = (models) => {

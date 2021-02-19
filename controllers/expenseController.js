@@ -50,11 +50,19 @@ exports.expense_create_post = function(req, res, next) {
            CategoryId: req.body.category_id,
            status: getStatus,
 
-       }).then(function() {
+       }).then(expense => {
+        res.json({
+            success: 'Expense Created Successfully',
+            expense: expense
+        });
+    }).catch(error => {
+        console.log("There was an error: " + error);
+        res.status(404).send(error);
+    })/*.then(function() {
           
         //console.log("For the expense we have: " + moment(models.Expense.time).format('hh:mm A'), req.body.details, req.body.amount );
            res.redirect('/employee/' + employee_id);
-     });
+     });*/
 };
 
 // Display Expense delete  GET.
@@ -63,11 +71,19 @@ exports.expense_delete_post = function(req, res, next) {
      where: {
       id: req.params.expense_id
     }
-  }).then(function() {
+  }).then(expense => {
+    res.json({
+        success: 'Expense Deleted Successfully',
+        expense: expense
+    });
+}).catch(error => {
+    console.log("There was an error: " + error);
+    res.status(404).send(error);
+})/*.then(function() {
   
     res.redirect('/expenses');
     console.log("Expense deleted successfully");
-  });
+  });*/
 };
 
 // Display expense update form on GET.
@@ -110,11 +126,19 @@ exports.expense_update_post = function(req, res, next) {
               id: req.params.expense_id
           }
       } 
-   ).then(function() { 
+   ).then(expense => {
+    res.json({
+        success: 'Expense updated Successfully',
+        expense: expense
+    });
+}).catch(error => {
+    console.log("There was an error: " + error);
+    res.status(404).send(error);
+})/*.then(function() { 
   
           res.redirect("/expenses");  
           console.log("Expense updated successfully");
-    });
+    });*/
 };
 
 // Display list of all expenses.
@@ -127,13 +151,21 @@ exports.expense_list = (req, res, next) => {
         attributes: ['id', 'first_name']
       }
     ]
-  })
-  .then(function(expenses) {
+  }).then(expense => {
+    res.json({
+        success: 'Expense list',
+        expense: expense
+    });
+}).catch(error => {
+    console.log("There was an error: " + error);
+    res.status(404).send(error);
+})
+  /*.then(function(expenses) {
   // renders an employee list page
   console.log("rendering expense list");
   res.render('pages/expense_list', { title: 'Expense List', expenses: expenses, layout: 'layouts/list'} );
   console.log(" list renders successfully");
-  });
+  });*/
 };
 
 // Display detail page for a specific expense.
@@ -155,10 +187,18 @@ exports.expense_detail = (req, res, next) => {
             }
           ]
           }
-  ).then((expense) => {
+  ).then(expense => {
+    res.json({
+        success: 'Expense detail',
+        expense: expense
+    });
+}).catch(error => {
+    console.log("There was an error: " + error);
+    res.status(404).send(error);
+})/*.then((expense) => {
   // renders an inividual employee details page
   //console.log(department_id.name)
   res.render('pages/employee_detail', { title: 'Expense Details',   expense: expense, moment: moment, layout: 'layouts/detail'} );
   //console.log("Employee details renders successfully" + res.json(req.aprover));
-  });
+  });*/
 };
