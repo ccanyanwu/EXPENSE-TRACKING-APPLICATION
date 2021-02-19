@@ -39,8 +39,8 @@ module.exports = (sequelize, DataTypes) => {
     CategoryId: {type: DataTypes.INTEGER},
     status: {
       type: DataTypes.STRING,
-      defaultValue: 'pending'
-    },
+      /*defaultValue: 'pending',*/
+      },
   });
 
   Expense.associate = (models) => {

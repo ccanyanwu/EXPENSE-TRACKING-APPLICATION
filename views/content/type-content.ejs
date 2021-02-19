@@ -11,56 +11,56 @@
             </form>
         </div>
     </div>
-<% } else if (title == 'Delete Cype') { %>
+<% } else if (title == 'Delete Type') { %>
      
-<% } else if (title == 'Update Cype') { %>
+<% } else if (title == 'Update Type') { %>
     <div class="col-sm-8">    
         <div class="jumbotron">
-            <form action="/blog/cype/<%= cype.id %>/update" method="post">
-               Cype Name:<br>
-              <input type="text" name="name" value="<%= cype.name %>">
+            <form action="/type/<%= type.id %>/update" method="post">
+               Type Name:<br>
+              <input type="text" name="name" value="<%= type.name %>">
               <br><br>
-              <input type="submit" value="Update Cype">
+              <input type="submit" value="Update Type">
             </form>
         </div>
     </div>
-<% } else if (title == 'Cype Details') { %>
+<% } else if (title == 'Type Details') { %>
     <div class="col-sm-8">    
         <div class="">
-             <h1>Details of a Single cype - <%= cype.name %></h1>
-             <p>I am an cype for this ID = <%= cype.id %></p>
-             <p>Cype Name: <%= cype.name %></p>
-             <a href="/blog/cype/<%= cype.id %>/update">Edit  Cype</a> | <a href="/blog/cype/<%= cype.id %>/delete">Delete Cype</a>
-        </div>
-        
-        <% if(cype.posts.length == 0) { %>
-            <h2>There are no posts under this cype yet </h2>
-        <% } else { %>
-            <h2>All Posts in this Cype</h2>
-            <div class="">
-                <ol>
-                <% cype.posts.forEach(function(post) { %>
-                        <li>
-                            <p><%= post.post_title %>
-                               <%= post.post_body %>
-                                <br/><a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
-                            </p>
-                        </li>
-                    <br/>
-                <% }); %>
-                </ol>
-            </div>    
-         <% } %>  
+            <h1>Details of <%= type.name %> Type  </h1>
+            <p>I am an <%= type.name %> expense with  ID = <%= type.id %></p>
+            <p>Type Name: <%= type.name %></p>
+            <a href="/type/<%= type.id %>/update">Edit  type</a> | <a href="/type/<%= type.id %>/delete">Delete type</a>
+       </div>
+       
+       <% if(type.Expenses.length == 0) { %>
+           <h2>There are no expenses under this type yet </h2>
+       <% } else { %>
+           <h2>All Expenses in this type</h2>
+           <div class="">
+               <ol>
+               <% type.Expenses.forEach(function(expense) { %>
+                       <li>
+                           <p><%= expense.details %><br>
+                               Amount - &#8358;<%= expense.amount %><br>
+                               Status - <%= expense.status %><br>
+                           </p>
+                       </li>
+                   <br/>
+               <% }); %>
+               </ol>
+           </div>    
+        <% } %>
     </div>
-<% } else if (title == 'Cype List') { %>
+<% } else if (title == 'Type List') { %>
     <div class="col-sm-8">    
         <div class="">
         <ol>
-        <% categories.forEach(function(cype) { %>
+        <% types.forEach(function(type) { %>
                 <li>
-                    <h4><a href="/blog/cype/<%= cype.id %>"><%= cype.name %></a></h4>
-                    <p>The main body of the cype <%= cype.name %></p>
-                     <a href="/blog/cype/<%= cype.id %>/update">Edit  Cype</a> | <a href="/blog/cype/<%= cype.id %>/delete">Delete Cype</a>
+                    <h4 class="text-capitalize"><a href="/type/<%= type.id %>"><%= type.name %> Expenses</a></h4>
+                    
+                     <a href="/type/<%= type.id %>/update">Edit  Type</a> | <a href="/type/<%= type.id %>/delete">Delete   Type</a>
                 </li>
             <br/>
         <% }); %>

@@ -52,15 +52,15 @@
             </div>    
          <% } %>  
     </div>
-<% } else if (title == 'Cepartment List') { %>
+<% } else if (title == 'Department List') { %>
     <div class="col-sm-8">    
         <div class="">
         <ol>
-        <% categories.forEach(function(cepartment) { %>
+        <% departments.forEach(function(department) { %>
                 <li>
-                    <h4><a href="/blog/cepartment/<%= cepartment.id %>"><%= cepartment.name %></a></h4>
-                    <p>The main body of the cepartment <%= cepartment.name %></p>
-                     <a href="/blog/cepartment/<%= cepartment.id %>/update">Edit  Cepartment</a> | <a href="/blog/cepartment/<%= cepartment.id %>/delete">Delete Cepartment</a>
+                    <h4><a href="/department/<%= department.id %>"><%= department.name %></a></h4>
+                    <p> The  in this department</p>
+                     <a href="/department/<%= department.id %>/update">Edit  Cepartment</a> | <a href="/department/<%= department.id %>/delete">Delete Cepartment</a>
                 </li>
             <br/>
         <% }); %>

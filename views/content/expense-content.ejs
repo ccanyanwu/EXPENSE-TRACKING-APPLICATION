@@ -37,108 +37,66 @@
             </form>
         </div>
     </div>
-<% } else if (title == 'Delete Author') { %>
+<% } else if (title == 'Delete Expense') { %>
      
-<% } else if (title == 'Update Author') { %>
+<% } else if (title == 'Update Expense') { %>
     <div class="col-sm-8">    
         <div class="jumbotron">
-            <form action="/blog/author/<%= author.id %>/update" method="post">
-               Author First Name:<br>
-              <input type="text" name="first_name" value="<%= author.first_name %>">
+            <form action="/expense/<%= expense.id %>/update" method="post">
+               Details:<br>
+              <input type="text" name="details" value="<%= expense.details %>">
               <br><br>
-              Author Last Name:<br>
-              <input type="text" name="last_name" value="<%= author.last_name %>">
+              Amount:<br>
+              <input type="text" name="amount" value="<%= expense.amount %>">
               <br><br>
-               Author Email Address:<br>
-              <input type="email" name="email" value="<%= author.email %>">
+              TypeId:<br>
+              <select name = "type_id" class="form-control">
+                <% types.forEach((type) => { %>
+                <option  value="<%= type.id %>"><%= type.name %></option>
+                <br/>
+                <% }); %>
+              </select>
+              <br><br>
+              CategoryId:<br>
+              <select name = "category_id" class="form-control">
+                <% categories.forEach((category) => { %>
+                <option  value="<%= category.id %>"><%= category.name %></option>
+                <br/>
+                <% }); %>
+              </select>
               <br><br>
               <input type="submit" value="Update Author">
             </form>
         </div>
     </div>
-<% } else if (title == 'Author Details') { %>
-    <div class="col-sm-8">    
+<% } else if (title == 'Expense Details') { %>
+    <div class="col-sm-12">    
         <div class="">
-             <h1>Details of a Single author - <%= author.first_name %> <%= author.last_name %> </h1>
-             <p>I am an author for this ID = <%= author.id %></p>
-             <p>Author First Name: <%= author.first_name %></p>
-             <p>Author Last Name:  <%= author.last_name %></p>
-             <p>Author Email Address:  <%= author.email %></p>
-             <a href="/blog/author/<%= author.id %>/update">Edit  Author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete Author</a>
-        
-        <% if(author.Posts.length == 0) { %>
-            <h2>There are no posts by this author yet </h2>
-        <% } else { %>
-            <h2>All Posts by this Author</h2>
-            <div class="">
-                <ol>
-                <% author.Posts.forEach(function(post) { %>
-                        <li>
-                            <p> 
-                                <a href="/blog/post/<%= post.id %>"><%= post.post_title %></a>
-                                 <br/>
-                                <%= post.post_body %>
-                                <br/> <a href="/blog/post/<%= post.id %>/update">Edit  Post</a> | <a href="/blog/post/<%= post.id %>/delete">Delete Post</a>
-                            </p>
-                        </li>
-                    <br/>
-                <% }); %>
-                </ol>
-            </div>    
-         <% } %>   
-        </div>
-        
-        <h2>Create new post for this author </h2>
-        <!--DISPLAY CREATE FORM IN AUTHOR-->
-        
-        <!--YOU CAN ALSO MOVE THIS TO ANY ROUTE IF YOU WANT-->
-        
-        <form action="/blog/post/create" method="post">
-              Post Title:<br>
-              <input type="text" name="post_title" value="Post Title">
-              <br><br/>
-              Post Body:<br>
-              <input type="text" name="post_body" value="Post Body">
-              <br><br>
-              
-              <!--I DONT NEED TO LIST AUTHORS AGAIN - BECAUSE I AM ON A SINGLE AUTHOR PAGE, I WILL -->
-              <!--PASS THE AUTHOR ID AUTOMATICALLY WITH FORM INPUTS USING THE HIDDEN FIELD -->
-              <!--Author:<br>-->
-              <!-- <select name = "author_id">-->
-              <!--      <#% authors.forEach(function(author) { %>-->
-              <!--      <option  value="<#%= author.id %>"><#%= author.first_name %></option>-->
-              <!--  <br/>-->
-              <!-- <#% }); %>-->
-              <!--  </select>-->
-              <input type="hidden" name="author_id" value="<%= author.id %>">
-              Category:<br>
-                <div>
-                     <% categories.forEach(function(category) { %>
-                    <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
-                    <label for="<%= category.name %>"><%= category.name %></label>
-                    
-                <br/>
-               <% }); %>
-                 </div>
-              <br>
-              <input type="submit" value="Create Post" onClick="checkCat()">
-             </form>
+             <h1>Details of <%= expense.details %> expense applied for by <%= expense.Employee.first_name %> <%= expense.Employee.last_name %> </h1>
+             <p>Date  - <%= moment(expense.createdAt).format('DD MMM YYYY') %></p>
+             <p>Time  - <%= moment(expense.time).format('hh:mm A') %></p>
+             <p>Amount  - &#8358;<%= expense.amount %></p>
+             <p>Status - <%= expense.status %></p>
+             <p><%= expense.Employee.first_name%>'s Role - <span class="text-uppercase"><%= expense.Employee.role %></span> </p>
+             <p>Type - <%= expense.Type.name %></p>
+             <p>Category - <%= expense.Category.name %></p>
+        </div>    
     </div>
-<% } else if (title == 'Author List') { %>
+<% } else if (title == 'Expense List') { %>
     <div class="col-sm-8">    
         <div class="">
         <ol>
-        <% authors.forEach(function(author) { %>
+        <% expenses.forEach(function(expense) { %>
                 <li>
-                    <h4><a href="/blog/author/<%= author.id %>"><%= author.first_name %></a></h4>
-                    <p>The main body of the author <%= author.last_name %>, <%= author.email %></p>
-                     <a href="/blog/author/<%= author.id %>/update">Edit  Author</a> | <a href="/blog/author/<%= author.id %>/delete">Delete Author</a>
+                    <h4><a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>"><%= expense.details %></a></h4>
+                    <p><strong>Status</strong> - <%= expense.status %></p>
+                     <a href="/expense/<%= expense.id %>/update">Edit  Author</a> | <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/delete">Delete Expense</a>
                 </li>
             <br/>
         <% }); %>
         </ol>
     </div>
-    <a href="/blog/author/create"> CLICK HERE TO CREATE AUTHOR</a>
+    
     </div>
 <% } else { %>
 
