@@ -27,6 +27,7 @@ router.get('/category/:category_id/update', category_controller.category_update_
 // POST request to update Category.
 router.post('/category/:category_id/update', category_controller.category_update_post);
 
+
 // GET request for list of all Categories.
 router.get('/categories', category_controller.category_list);
 
@@ -94,6 +95,12 @@ router.get('/expense/:expense_id/update', expense_controller.expense_update_get)
 
 // POST request to update Employee.
 router.post('/expense/:expense_id/update', expense_controller.expense_update_post);
+
+// GET request to REVIEW Expense.
+router.get('/expense/:expense_id/review', expense_controller.expense_review_get);
+
+// POST request to REVIEW Category.
+router.post('/expense/:expense_id/review', expense_controller.expense_review_post);
 
 // GET request for list of all Expenses.
 router.get('/expenses', expense_controller.expense_list);

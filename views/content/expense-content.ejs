@@ -37,8 +37,45 @@
             </form>
         </div>
     </div>
-<% } else if (title == 'Delete Expense') { %>
-     
+<% } else if (title == 'Review Expense') { %>
+    <div class="col-sm-8">    
+        <div class="jumbotron">
+            <form action="/expense/<%= expense.id %>/review" method="post">
+               Details:<br>
+              <input type="text" name="details" value="<%= expense.details %>" disabled>
+              <br><br>
+              Amount:<br>
+              <input type="text" name="amount" value="<%= expense.amount %>" disabled>
+              <br><br>
+              Type:<br>
+              <select name = "type_id" class="form-control" disabled>
+                <% types.forEach((type) => { %>
+                <option  value="<%= type.id %>"><%= type.name %></option>
+                <br/>
+                <% }); %>
+              </select>
+              <br><br>
+              Category:<br>
+              <select name = "category_id" class="form-control" disabled>
+                <% categories.forEach((category) => { %>
+                <option  value="<%= category.id %>"><%= category.name %></option>
+                <br/>
+                <% }); %>
+              </select>
+              <br><br>
+              Status: <br>
+              <select name = "status" class="form-control" >
+                <option  value="<%= expense.status %>"><%= expense.status %></option>
+                <br/>
+                <option  value="approved">approved</option>
+                <br/>
+                <option  value="declined">declined</option>
+              </select>
+              <br><br>
+              <input type="submit" value="Update Author">
+            </form>
+        </div>
+    </div>
 <% } else if (title == 'Update Expense') { %>
     <div class="col-sm-8">    
         <div class="jumbotron">
@@ -80,6 +117,7 @@
              <p><%= expense.Employee.first_name%>'s Role - <span class="text-uppercase"><%= expense.Employee.role %></span> </p>
              <p>Type - <%= expense.Type.name %></p>
              <p>Category - <%= expense.Category.name %></p>
+             <p><a href="/expense/<%= expense.id %>/review">Review Expense</a></p>
         </div>    
     </div>
 <% } else if (title == 'Expense List') { %>

@@ -60,13 +60,12 @@
                 <li>
                     <h4><a href="/category/<%= category.id %>"><%= category.name %></a></h4>
                      <a href="/category/<%= category.id %>/update">Edit  Category</a> | <a href="/category/<%= category.id %>/delete">Delete Category</a>
+                     <a href="/category/<%= category.id %>/review"> REVIEW CATEGORY</a>
                 </li>
             <br/>
         <% }); %>
         </ol>
     </div>
-        <a href="/blog/category/create"> CLICK HERE TO CREATE CATEGORY</a>
-
     </div>
 <% } else { %>
 

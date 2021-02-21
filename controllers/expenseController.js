@@ -1,6 +1,8 @@
 var Expense = require('../models/expense');
 var models = require('../models');
 var moment = require('moment');
+var sequelize = require('sequelize');
+
 
 
 // Display expense create form on GET.
@@ -50,19 +52,11 @@ exports.expense_create_post = function(req, res, next) {
            CategoryId: req.body.category_id,
            status: getStatus,
 
-       }).then(expense => {
-        res.json({
-            success: 'Expense Created Successfully',
-            expense: expense
-        });
-    }).catch(error => {
-        console.log("There was an error: " + error);
-        res.status(404).send(error);
-    })/*.then(function() {
+       }).then(function() {
           
         //console.log("For the expense we have: " + moment(models.Expense.time).format('hh:mm A'), req.body.details, req.body.amount );
            res.redirect('/employee/' + employee_id);
-     });*/
+     });
 };
 
 // Display Expense delete  GET.
@@ -71,19 +65,11 @@ exports.expense_delete_post = function(req, res, next) {
      where: {
       id: req.params.expense_id
     }
-  }).then(expense => {
-    res.json({
-        success: 'Expense Deleted Successfully',
-        expense: expense
-    });
-}).catch(error => {
-    console.log("There was an error: " + error);
-    res.status(404).send(error);
-})/*.then(function() {
+  }).then(function() {
   
     res.redirect('/expenses');
     console.log("Expense deleted successfully");
-  });*/
+  });
 };
 
 // Display expense update form on GET.
@@ -95,7 +81,7 @@ exports.expense_update_get = async (req, res, next) => {
   models.Expense.findById(
           req.params.expense_id
   ).then(function(expense) {
-         // renders a post form
+         // renders an  update form
          res.render('forms/expense_form', { title: 'Update Expense', categories:categories, expense: expense, types:types, layout: 'layouts/detail'});
          console.log("Expense update get successful");
     });
@@ -126,46 +112,71 @@ exports.expense_update_post = function(req, res, next) {
               id: req.params.expense_id
           }
       } 
-   ).then(expense => {
-    res.json({
-        success: 'Expense updated Successfully',
-        expense: expense
-    });
-}).catch(error => {
-    console.log("There was an error: " + error);
-    res.status(404).send(error);
-})/*.then(function() { 
+   ).then(function() { 
   
           res.redirect("/expenses");  
           console.log("Expense updated successfully");
-    });*/
+    });
+};
+
+// Display expense review form form on GET.
+exports.expense_review_get = async (req, res, next) => {
+  console.log("ID is " + req.params.expense_id);
+  const types = await models.Type.findAll();
+  const categories = await models.Category.findAll();
+
+  models.Expense.findById(
+          req.params.expense_id
+  ).then(function(expense) {
+         // renders a expense review form form
+         res.render('forms/expense_review_form', { title: 'Review Expense', categories:categories, expense: expense, types:types, layout: 'layouts/detail'});
+         console.log("Expense reviewed successfully");
+    });
+};
+
+// Handle EXPENSE review on POST.
+exports.expense_review_post = function(req, res, next) {
+  // POST logic to review an expense status
+  console.log("ID is " + req.params.expense_id);
+  //logic for expense status
+  models.Expense.update(
+  // Values to update
+      {
+          status:req.body.status
+      },
+    { // Clause
+          where: 
+          {
+              id: req.params.expense_id
+          }
+      } 
+   ).then(function() { 
+  
+          res.redirect("/expenses");  
+          console.log("Expense updated successfully");
+    });
 };
 
 // Display list of all expenses.
-exports.expense_list = (req, res, next) => {
+exports.expense_list = async (req, res, next) => {
+  
   
   models.Expense.findAll({
     include:[
       {
         model:models.Employee,
-        attributes: ['id', 'first_name']
+        attributes: ['id', 'first_name'],
+        
       }
-    ]
-  }).then(expense => {
-    res.json({
-        success: 'Expense list',
-        expense: expense
-    });
-}).catch(error => {
-    console.log("There was an error: " + error);
-    res.status(404).send(error);
-})
-  /*.then(function(expenses) {
+    ],
+    //attributes: ['amount'],
+    
+  }).then(function(expenses) {
   // renders an employee list page
-  console.log("rendering expense list");
+  console.log("rendering expense list " );
   res.render('pages/expense_list', { title: 'Expense List', expenses: expenses, layout: 'layouts/list'} );
   console.log(" list renders successfully");
-  });*/
+  });
 };
 
 // Display detail page for a specific expense.
@@ -187,18 +198,10 @@ exports.expense_detail = (req, res, next) => {
             }
           ]
           }
-  ).then(expense => {
-    res.json({
-        success: 'Expense detail',
-        expense: expense
-    });
-}).catch(error => {
-    console.log("There was an error: " + error);
-    res.status(404).send(error);
-})/*.then((expense) => {
+  ).then((expense) => {
   // renders an inividual employee details page
   //console.log(department_id.name)
   res.render('pages/employee_detail', { title: 'Expense Details',   expense: expense, moment: moment, layout: 'layouts/detail'} );
   //console.log("Employee details renders successfully" + res.json(req.aprover));
-  });*/
+  });
 };
