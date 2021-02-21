@@ -17,19 +17,11 @@ exports.type_create_post = function(req, res, next) {
      // no need to render a page
       models.Type.create({
             name: req.body.name 
-        }).then(type => {
-          res.json({
-              success: 'Type Created Successfully',
-              type: type
-          });
-      }).catch(error => {
-          console.log("There was an error: " + error);
-          res.status(404).send(error);
-      })/*.then(function() {
+        }).then(function() {
             console.log(`Type created successfully`);
            // check if there was an error during type creation creation
             res.send('/blog/types');
-      });*/
+      });
 };
 
 // Handle type delete on POST.
@@ -40,22 +32,14 @@ exports.type_delete_post = function(req, res, next) {
       where: {
         id: req.params.type_id
       }
-    }).then(type => {
-      res.json({
-          success: 'type Deleted Successfully',
-          type: type
-      });
-  }).catch(error => {
-      console.log("There was an error: " + error);
-      res.status(404).send(error);
-  })/*.then(function() {
+    }).then(function() {
      // If an post gets deleted successfully, we just redirect to categories list
      // no need to render a page
      res.redirect('/types');
       
       
       console.log("Type deleted successfully");
-    });*/
+    });
 };
 
 // Display category update form on GET.
@@ -84,19 +68,11 @@ exports.type_update_post = function(req, res, next) {
               id: req.params.type_id
           }
       } 
-   ).then(type => {
-    res.json({
-        success: 'type updated Successfully',
-        type: type
-    });
-}).catch(error => {
-    console.log("There was an error: " + error);
-    res.status(404).send(error);
-})/*.then(function() { 
+   ).then(function() { 
           // If a type gets updated successfully, we just redirect to types list
           res.redirect("/types");  
           console.log("type updated successfully");
-    });*/
+    });
 };
 
 // Display list of all Types.
@@ -110,21 +86,13 @@ exports.type_list = (req, res, next) => {
           }
         ]
       }
-      ).then(type => {
-        res.json({
-            success: 'type list',
-            type: type
-        });
-    }).catch(error => {
-        console.log("There was an error: " + error);
-        res.status(404).send(error);
-    })/*.then(function(types) {
+      ).then(function(types) {
       // renders an employee list page
       let total = types.length;
       console.log("rendering type list");
       res.render('pages/type_list', { title: 'Type List', total:total, types: types, layout: 'layouts/list'} );
       console.log(" list renders successfully");
-      });*/
+      });
     };
 
 // Display detail page for a specific category.
@@ -142,18 +110,10 @@ exports.type_detail = async function(req, res, next) {
                     }
                 ]
               }
-        ).then(type => {
-          res.json({
-              success: 'type detail',
-              type: type
-          });
-      }).catch(error => {
-          console.log("There was an error: " + error);
-          res.status(404).send(error);
-      })/*.then(function(type) {
+        ).then(function(type) {
         // renders an inividual type details page
         res.render('pages/type_detail', { title: 'Type Details', type:type, layout: 'layouts/detail'} );
         console.log("Category deteials renders successfully");
-        });*/
+        });
         
 };

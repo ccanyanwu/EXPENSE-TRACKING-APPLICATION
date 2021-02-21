@@ -17,21 +17,11 @@ exports.category_create_post = function(req, res, next) {
      // no need to render a page
       models.Category.create({
             name: req.body.name 
-        }).then(category => {
-          res.json({
-              success: 'Category Created Successfully',
-              category: category
-          });
-      }).catch(error => {
-          console.log("There was an error: " + error);
-          res.status(404).send(error);
-      })/*.then(function() {
+        }).then(function() {
            // check if there was an error during post creation
             res.send('/categories');
-      });*/
+      });
 };
-
-
 
 // Handle category delete on POST.
 exports.category_delete_post = function(req, res, next) {
@@ -41,20 +31,12 @@ exports.category_delete_post = function(req, res, next) {
             where: {
               id: req.params.category_id
             }
-          }).then(category => {
-            res.json({
-                success: 'Category Deleted Successfully',
-                category: category
-            });
-        }).catch(error => {
-            console.log("There was an error: " + error);
-            res.status(404).send(error);
-        })/*.then(function() {
+          }).then(function() {
            // If an post gets deleted successfully, we just redirect to categories list
            // no need to render a page
             res.redirect('/categories');
             console.log("Category deleted successfully");
-          });*/
+          });
 };
 
 // Display category update form on GET.
@@ -83,19 +65,24 @@ exports.category_update_post = function(req, res, next) {
                     id: req.params.category_id
                 }
             } 
-         ).then(category => {
-          res.json({
-              success: 'category updated Successfully',
-              category: category
-          });
-      }).catch(error => {
-          console.log("There was an error: " + error);
-          res.status(404).send(error);
-      })/*.then(function() { 
+         ).then(function() { 
                 // If a category gets updated successfully, we just redirect to categories list
                 res.redirect("/categories");  
                 console.log("Post updated successfully");
-          });*/
+          });
+};
+
+
+// Display category review form on GET.
+exports.category_review_get = function(req, res, next) {
+        
+      models.Category.findById(
+              req.params.category_id
+      ).then(function(category) {
+             // renders a category form
+             res.render('forms/category_review_form', { title: 'Review Category', category: category, layout: 'layouts/detail'});
+             console.log("Category update get successful");
+        });
 };
 
 // Display detail page for a specific category.
@@ -113,19 +100,11 @@ exports.category_detail = async function(req, res, next) {
                     }
                 ]
               }
-        ).then(category => {
-          res.json({
-              success: 'Category detail',
-              category: category
-          });
-      }).catch(error => {
-          console.log("There was an error: " + error);
-          res.status(404).send(error);
-      })/*.then(function(category) {
+        ).then(function(category) {
         // renders an inividual category details page
         res.render('pages/category_detail', { title: 'Category Details', category:category, layout: 'layouts/detail'} );
         console.log("Category deteials renders successfully");
-        });*/
+        });
         
 };
 
@@ -141,20 +120,12 @@ exports.category_list = function(req, res, next) {
                     }
                 ]
               }
-        ).then(category => {
-          res.json({
-              success: 'Category list',
-              category: category
-          });
-      }).catch(error => {
-          console.log("There was an error: " + error);
-          res.status(404).send(error);
-      })/*.then(function(categories) {
+        ).then(function(categories) {
         // renders a post list page
         console.log("rendering category list");
         res.render('pages/category_list', { title: 'Category List', categories: categories, layout: 'layouts/list'} );
         console.log("Categories list renders successfully");
-        });*/
+        });
 };
 
  
