@@ -1,51 +1,55 @@
 <!--Cype VIEW-->
-<!--complete logic for cype view-->
+<!--complete logic for type view-->
 <% if (title == 'Create Type') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="" method="post">
-              Type Name:<br>
-              <input type="text" name="name" value="Type Name">
-              <br><br>
-              <input type="submit" value="Create Type">
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="" method="post" class="w-50  mx-auto">
+              <label for="name"><strong class="fs">Type Name</strong></label>
+              <input class="iw" type="text" name="name" placeholder="Type Name">
+              <input class="ib" type="submit" value="Create Type">
             </form>
         </div>
     </div>
-<% } else if (title == 'Delete Type') { %>
-     
 <% } else if (title == 'Update Type') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="/type/<%= type.id %>/update" method="post">
-               Type Name:<br>
-              <input type="text" name="name" value="<%= type.name %>">
-              <br><br>
-              <input type="submit" value="Update Type">
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="/type/<%= type.id %>/update" method="post" class="w-50  mx-auto">
+                <label for="name"><strong class="fs">Type Name</strong></label>
+              <input class="iw" type="text" name="name" value="<%= type.name %>">
+              <input class="ib" type="submit" value="Update Type">
             </form>
         </div>
     </div>
 <% } else if (title == 'Type Details') { %>
-    <div class="col-sm-8">    
-        <div class="">
-            <h1>Details of <%= type.name %> Type  </h1>
-            <p>I am an <%= type.name %> expense with  ID = <%= type.id %></p>
-            <p>Type Name: <%= type.name %></p>
-            <a href="/type/<%= type.id %>/update">Edit  type</a> | <a href="/type/<%= type.id %>/delete">Delete type</a>
+    <div class="col-sm-12">    
+        <div class="mb-5">
+            <h1>Details of <%= type.name %> Type of Expenses</h1>
+            <p>Type ID : <strong><%= type.id %></strong></p>
+            <p>Type Name: <strong><%= type.name %></strong></p>
+            <a href="/type/<%= type.id %>/update" class="badge badge-success">Edit  type</a> 
+            <a href="/type/<%= type.id %>/delete" class="badge badge-danger">Delete type</a>
        </div>
        
        <% if(type.Expenses.length == 0) { %>
-           <h2>There are no expenses under this type yet </h2>
+           <div class="alert alert-info mt-5 w-50">
+            <strong>Info:</strong> You don't have any expense type created yet, <a href="/type/create" class="alert-link">add one here</a>.
+        </div>
        <% } else { %>
-           <h2>All Expenses in this type</h2>
+           <h2 class="text-capitalize fwb">All <%= type.name %> Expenses</h2>
            <div class="">
                <ol>
                <% type.Expenses.forEach(function(expense) { %>
-                       <li>
-                           <p><%= expense.details %><br>
-                               Amount - &#8358;<%= expense.amount %><br>
-                               Status - <%= expense.status %><br>
-                           </p>
-                       </li>
+                       <div class="row">
+                        <li class="col-9">
+                            <h4><%= expense.details %></h4>
+                            <p>Amount - &#8358;<%= expense.amount %></p>
+                            <p>Status - <%= expense.status %></p>
+                        </li>
+                        <div class="col-3 mr-auto">
+                         <a href="/type/<%= type.id %>/update" class="badge badge-success">Edit</a>
+                         <a href="/type/<%= type.id %>/delete" class="badge badge-danger">Delete</a>
+                        </div>
+                    </div>
                    <br/>
                <% }); %>
                </ol>
@@ -53,23 +57,26 @@
         <% } %>
     </div>
 <% } else if (title == 'Type List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-12">    
         <div class="">
         <ol>
         <% types.forEach(function(type) { %>
-                <li>
-                    <h4 class="text-capitalize"><a href="/type/<%= type.id %>"><%= type.name %> Expenses</a></h4>
-                    
-                     <a href="/type/<%= type.id %>/update">Edit  Type</a> | <a href="/type/<%= type.id %>/delete">Delete   Type</a>
-                </li>
+                <div class="row">
+                    <li class="col-10">
+                        <h4><a href="/type/<%= type.id %>"><%= type.name %> Expenses</a></a></h4>
+                    </li>
+                    <div class="col-2 mr-auto">
+                     <a href="/type/<%= type.id %>/update" class="badge badge-success">Edit</a>
+                     <a href="/type/<%= type.id %>/delete" class="badge badge-danger">Delete</a>
+                    </div>
+                </div>
             <br/>
         <% }); %>
         </ol>
     </div>
-        <a href="/blog/cype/create"> CLICK HERE TO CREATE Cype</a>
-
+    <a href="/type/create" class="btn btn-primary pill">Add a new type of expense </a>
     </div>
 <% } else { %>
 
 <% } %>
-<!--Cype VIEW END HERE-->
+<!--type VIEW END HERE-->

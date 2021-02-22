@@ -1,71 +1,80 @@
 <!--CATEGORY VIEW-->
 <!--complete logic for category view-->
 <% if (title == 'Create Category') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="" method="post">
-              Category Name:<br>
-              <input type="text" name="name" value="Category Name">
-              <br><br>
-              <input type="submit" value="Create Category">
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="" method="post" class="w-50  mx-auto">
+              <label for="name"><strong class="fs">Category Name</strong></label>
+              <input class="iw" type="text" name="name" placeholder="Category Name">
+              <input class="ib" type="submit" value="Create Category">
             </form>
         </div>
     </div>
-<% } else if (title == 'Delete Category') { %>
-     
 <% } else if (title == 'Update Category') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="/category/<%= category.id %>/update" method="post">
-               Category Name:<br>
-              <input type="text" name="name" value="<%= category.name %>">
-              <br><br>
-              <input type="submit" value="Update Category">
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="/category/<%= category.id %>/update" method="post" class="w-50  mx-auto">
+                <label for="name"><strong class="fs">Category Name</strong></label>
+              <input class="iw" type="text" name="name" value="<%= category.name %>">
+              <input class="ib" type="submit" value="Update Category">
             </form>
         </div>
     </div>
 <% } else if (title == 'Category Details') { %>
-    <div class="col-sm-8">    
-        <div class="">
-             <h1>Details of <%= category.name %> Category  </h1>
-             <p>I am an category for this ID = <%= category.id %></p>
-             <p>Category Name: <%= category.name %></p>
-             <a href="/category/<%= category.id %>/update">Edit  Category</a> | <a href="/category/<%= category.id %>/delete">Delete Category</a>
+    <div class="col-sm-12">    
+        <div class="mb-5 ">
+             <h1> Details of <strong><%= category.name %></strong>  Category  </h1>
+             <p>Categoy ID : <strong><%= category.id %></strong></p>
+             <p>Category Name: <strong><%= category.name %></strong></p>
+             <a href="/category/<%= category.id %>/update" class="badge badge-success">Edit  Category</a>  <a href="/category/<%= category.id %>/delete" class="badge badge-danger">Delete Category</a>
         </div>
         
         <% if(category.Expenses.length == 0) { %>
-            <h2>There are no expenses under this category yet </h2>
+            <div class="alert alert-info mt-5 w-50">
+                <strong>Info:</strong> You don't have any expense under this category yet, <a href="/category/create" class="alert-link">add one here</a>.
+            </div>
         <% } else { %>
-            <h2>All Expenses in this Category</h2>
+            <h2 class="fwb">All Expenses in this Category</h2>
             <div class="">
                 <ol>
                 <% category.Expenses.forEach(function(expense) { %>
-                        <li>
-                            <p><%= expense.details %><br>
-                                Amount - &#8358;<%= expense.amount %><br>
-                                Status - <%= expense.status %><br>
-                            </p>
-                        </li>
+                        <div class="row">
+                            <li class="col-9">
+                                <h4><%= expense.details %></h4>
+                                <p>Amount - &#8358;<%= expense.amount %></p>
+                                <p>Status - <%= expense.status %></p>
+                            </li>
+                            <div class="col-3 mr-auto">
+                             <a href="/category/<%= category.id %>/update" class="badge badge-success">Edit</a>
+                             <a href="/category/<%= category.id %>/delete" class="badge badge-danger">Delete</a>
+                            </div>
+                        </div>
                     <br/>
                 <% }); %>
                 </ol>
             </div>    
          <% } %>  
+         <a href="/category/create" class="btn btn-primary pill">Add a new Category </a>
     </div>
 <% } else if (title == 'Category List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-12">    
         <div class="">
         <ol>
         <% categories.forEach(function(category) { %>
-                <li>
-                    <h4><a href="/category/<%= category.id %>"><%= category.name %></a></h4>
-                     <a href="/category/<%= category.id %>/update">Edit  Category</a> | <a href="/category/<%= category.id %>/delete">Delete Category</a>
-                     <a href="/category/<%= category.id %>/review"> REVIEW CATEGORY</a>
-                </li>
+                <div class="row">
+                    <li class="col-9">
+                        <h4><a href="/category/<%= category.id %>"><%= category.name %></a></h4>
+                    </li>
+                    <div class="col-3 mr-auto">
+                     <a href="/category/<%= category.id %>/update" class="badge badge-success">Edit</a>
+                     <a href="/category/<%= category.id %>/delete" class="badge badge-danger">Delete</a>
+                    </div>
+                </div>
             <br/>
         <% }); %>
         </ol>
     </div>
+    <a href="/category/create" class="btn btn-primary pill">Add a new Category </a>
     </div>
 <% } else { %>
 

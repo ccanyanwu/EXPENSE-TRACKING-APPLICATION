@@ -6,8 +6,7 @@ var router  = express.Router();
 var category_controller = require('../controllers/categoryController'); 
 var department_controller = require('../controllers/departmentController'); 
 var employee_controller = require('../controllers/employeeController'); 
-var expense_controller = require('../controllers/expenseController'); 
-var post_controller = require('../controllers/postController'); 
+var expense_controller = require('../controllers/expenseController');
 var type_controller = require('../controllers/typeController'); 
 
 
@@ -26,7 +25,6 @@ router.get('/category/:category_id/update', category_controller.category_update_
 
 // POST request to update Category.
 router.post('/category/:category_id/update', category_controller.category_update_post);
-
 
 // GET request for list of all Categories.
 router.get('/categories', category_controller.category_list);
@@ -47,7 +45,7 @@ router.post('/department/create', department_controller.department_create_post);
 // POST request to delete department.
 router.get('/department/:department_id/delete', department_controller.department_delete_post);
 
-// GET request for list of all Expenses.
+// GET request for list of all Departments.
 router.get('/departments', department_controller.department_list);
 
 
@@ -84,22 +82,22 @@ router.get('/employee/:employee_id', employee_controller.employee_detail);
 // GET request for creating expense. NOTE This must come before route for id (i.e. display expense).
 router.get('/employee/:employee_id/expense/create', expense_controller.expense_create_get);
 
-// POST request for creating employee.
+// POST request for creating expense.
 router.post('/employee/:employee_id/expense/create', expense_controller.expense_create_post);
 
 // POST request to delete Expense.
 router.get('/employee/:employee_id/expense/:expense_id/delete', expense_controller.expense_delete_post);
 
 // GET request to update Expense.
-router.get('/expense/:expense_id/update', expense_controller.expense_update_get);
+router.get('/employee/:employee_id/expense/:expense_id/update', expense_controller.expense_update_get);
 
-// POST request to update Employee.
+// POST request to update Expense.
 router.post('/expense/:expense_id/update', expense_controller.expense_update_post);
 
-// GET request to REVIEW Expense.
+// GET request to REVIEW Expense Status.
 router.get('/expense/:expense_id/review', expense_controller.expense_review_get);
 
-// POST request to REVIEW Category.
+// POST request to REVIEW Expense Status.
 router.post('/expense/:expense_id/review', expense_controller.expense_review_post);
 
 // GET request for list of all Expenses.
@@ -113,7 +111,7 @@ router.get('/employee/:employee_id/expense/:expense_id', expense_controller.expe
 
 
 ///TYPE ROUTES///
-// GET request for creating type. NOTE This must come before route for id (i.e. display employee).
+// GET request for creating type. NOTE This must come before route for id (i.e. display type).
 router.get('/type/create', type_controller.type_create_get);
 
 // POST request for creating type
@@ -138,4 +136,5 @@ router.get('/type/:type_id', type_controller.type_detail);
 
 // GET to home page.
 router.get('/', employee_controller.index);
+
 module.exports = router;
