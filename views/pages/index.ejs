@@ -19,16 +19,32 @@
     <!--total amount spent till date-->
     <div class="col-sm-12 col-md-3 neomorphism mx-4 my-3 p-2">
         <p class="text-left fwb">Total Amount spent till date</p>
-        <p class="text-right fwb">&#8358;<%= amountSum %></p> 
+        <% if(isNaN(amountSum)){%> 
+                <p>No expense has been added yet</p>
+            <%} else {%>
+                <p class="text-right fwb">&#8358;<%= amountSum %></p>
+            <%}
+        %>      
     </div>
     <!--most recent expense added to the database-->
     <div class="col-sm-12 col-md-3 neomorphism mx-4 my-3 p-2">
-        <p class="text-left fwb"><%= latest.Employee.first_name %> <%= latest.Employee.last_name%> just added the <a href="/employee/<%= latest.Employee.id %>/expense/<%= latest.id %>"><%= latest.details %> expense @ <%= moment(latest.time).format('hh: mm A') %>, <%= moment(latest.createdAt).format('DD MMM YYYY') %></a></p>
-        <p class="text-right fwb">&#8358;<%= latest.amount %> </p> 
+        <% 
+            if(latest == null) {%>
+                <p>There are no Expenses added to the system yet</p>
+            <%} else {%> 
+        
+                <p class="text-left fwb"><%= latest.Employee.first_name %> <%= latest.Employee.last_name%> just added the <a href="/employee/<%= latest.Employee.id %>/expense/<%= latest.id %>"><%= latest.details %> expense @ <%= moment(latest.time).format('hh: mm A') %>, <%= moment(latest.createdAt).format('DD MMM YYYY') %></a></p>
+                <p class="text-right fwb">&#8358;<%= latest.amount %> </p> 
+        <%} %>
     </div>
     <!--Expenses Based on Category-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
         <p class="display-4 fwb">Expenses Based on Category</p>
+        <% if(expenseCats.length == 0){%>
+            <p>No expense has been added based on category yet</p>
+           <%}
+           else {%> 
+        
         <% expenseCats.forEach(expenseCat => { %> 
             <p class="fwb"><%= expenseCat.name %></p>
             <%if(expenseCat.Expenses.length == 0){%> 
@@ -43,11 +59,16 @@
             %>
         <% })
         %> 
+        <%} %>
     </div>
 
     <!--Expenses Based on Type-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
         <p class="display-4 fwb">Type Based Expenses</p>
+        <% if(expenseTypes.length === 0){%> 
+                <p>No expense has been added based on type yet</p>
+            <%}
+            else{%> 
         <% expenseTypes.forEach(expenseType => { %> 
             <p class="fwb"><%= expenseType.name %></p>
             <%if(expenseType.Expenses.length == 0){%> 
@@ -62,15 +83,21 @@
             %>
         <% })
         %> 
+        <%} %>
     </div>
     <!--TOP 5 EXPENSES-->
     <div class="col-sm-12 col-md-10 mx-4 my-3 p-2">
         <p class="fwb display-4">Top 5 expenses</p>
+        <% if(topExpenses.length == 0){%> 
+                <p>There are no expenses in the system to be ranked yet</p>
+            <%}
+            else{%> 
         <ol>
-            <% categoryBases.forEach(categoryBase => { %>   
-                    <li> <%= categoryBase.details %> - &#8358;<%= categoryBase.amount %></li>
+            <% topExpenses.forEach(topExpense => { %>   
+                    <li> <%= topExpense.details %> - &#8358;<%= topExpense.amount %></li>
                 <%}) 
             %>
         </ol>
+        <%} %>
     </div>
 </div>

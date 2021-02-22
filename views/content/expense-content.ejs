@@ -1,136 +1,129 @@
 <!--EXPENSE VIEW -->
-<!--complete logic for expensee view-->
+<!--complete logic for expense view-->
 <% if (title == 'Create Expense') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="" method="post">
-              Details:<br>
-              <input type="text" name="details" placeholder="for fuel">
-              <br><br>
-               Amount:<br>
-              <input type="number" name="amount" placeholder="for fuel">
-              <br><br>
-              Employee:<br>
-              <select name = "employee_id" class="form-control">
+    <div class="col-sm-12">    
+        <div class="">
+          <h2 class="display-4">Expense Form</h2>
+            <form action="" method="post" class="w-50  mx-auto">
+              <label for="details"><strong class="fs">Details</strong></label>
+              <input class="iw" type="text" name="details" placeholder="expense detail">
+              <label for="amount"><strong class="fs">Amount</strong></label>
+              <input class="iw" type="number" name="amount" placeholder="for fuel">
+              <label for="employee"><strong class="fs">Employee Name</strong></label>
+              <select class="iw" name = "employee_id" class="form-control">
                 <option class="text-capitalize"  value="<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></option>
                 <br/>
               </select>
-              
-              <br><br>
-              TypeId:<br>
-              <select name = "type_id" class="form-control">
+              <label for="type_id"><strong class="fs">Expense Type</strong></label>
+              <select class="iw" name = "type_id" class="form-control">
                 <% types.forEach((type) => { %>
                 <option  value="<%= type.id %>"><%= type.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <br><br>
-              CategoryId:<br>
-              <select name = "category_id" class="form-control">
+              <label for="category_id"><strong class="fs">Category</strong></label>
+              <select class="iw" name = "category_id" class="form-control">
                 <% categories.forEach((category) => { %>
                 <option  value="<%= category.id %>"><%= category.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <br><br>
-              <input type="submit" value="Create Expense">
+              <input class="ib" type="submit" value="Create Expense">
             </form>
         </div>
     </div>
 <% } else if (title == 'Review Expense') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="/expense/<%= expense.id %>/review" method="post">
-               Details:<br>
-              <input type="text" name="details" value="<%= expense.details %>" disabled>
-              <br><br>
-              Amount:<br>
-              <input type="text" name="amount" value="<%= expense.amount %>" disabled>
-              <br><br>
-              Type:<br>
-              <select name = "type_id" class="form-control" disabled>
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="/expense/<%= expense.id %>/review" method="post" class="w-50  mx-auto">
+              <label for="details"><strong class="fs">Details</strong></label>
+              <input class="iw" type="text" name="details" value="<%= expense.details %>" disabled>
+              <label for="amount"><strong class="fs">Amount</strong></label>
+              <input class="iw" type="text" name="amount" value="<%= expense.amount %>" disabled>
+              <label for="type_id"><strong class="fs">Expense Type</strong></label>
+              <select class="iw" name = "type_id" class="form-control" disabled>
                 <% types.forEach((type) => { %>
                 <option  value="<%= type.id %>"><%= type.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <br><br>
-              Category:<br>
-              <select name = "category_id" class="form-control" disabled>
+              <label for="category_id"><strong class="fs">Expense Category</strong></label>
+              <select class="iw" name = "category_id" class="form-control" disabled>
                 <% categories.forEach((category) => { %>
                 <option  value="<%= category.id %>"><%= category.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <br><br>
-              Status: <br>
-              <select name = "status" class="form-control" >
+              <label for="status"><strong class="fs">Status</strong></label>
+              <select class="iw" name = "status" class="form-control" >
                 <option  value="<%= expense.status %>"><%= expense.status %></option>
                 <br/>
                 <option  value="approved">approved</option>
                 <br/>
                 <option  value="declined">declined</option>
               </select>
-              <br><br>
-              <input type="submit" value="Update Author">
+              <input class="ib" type="submit" value="Review Expense">
             </form>
         </div>
     </div>
 <% } else if (title == 'Update Expense') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="/expense/<%= expense.id %>/update" method="post">
-               Details:<br>
-              <input type="text" name="details" value="<%= expense.details %>">
-              <br><br>
-              Amount:<br>
-              <input type="text" name="amount" value="<%= expense.amount %>">
-              <br><br>
-              TypeId:<br>
-              <select name = "type_id" class="form-control">
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="/expense/<%= expense.id %>/update" method="post" class="w-50  mx-auto">
+              <label for="details"><strong class="fs">Details</strong></label>
+              <input class="iw" type="text" name="details" value="<%= expense.details %>">
+              <label for="amount"><strong class="fs">Amount</strong></label>
+              <input class="iw" type="text" name="amount" value="<%= expense.amount %>">
+              <label for="type_id"><strong class="fs">Expense Type</strong></label>
+              <select class="iw" name = "type_id" class="form-control">
                 <% types.forEach((type) => { %>
                 <option  value="<%= type.id %>"><%= type.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <br><br>
-              CategoryId:<br>
-              <select name = "category_id" class="form-control">
+              <label for="category_id"><strong class="fs">Expense Category</strong></label>
+              <select class="iw" name = "category_id" class="form-control">
                 <% categories.forEach((category) => { %>
                 <option  value="<%= category.id %>"><%= category.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <br><br>
-              <input type="submit" value="Update Author">
+              <input class="ib" type="submit" value="Update Expense">
             </form>
         </div>
     </div>
 <% } else if (title == 'Expense Details') { %>
     <div class="col-sm-12">    
         <div class="">
-             <h1>Details of <%= expense.details %> expense applied for by <%= expense.Employee.first_name %> <%= expense.Employee.last_name %> </h1>
-             <p>Date  - <%= moment(expense.createdAt).format('DD MMM YYYY') %></p>
-             <p>Time  - <%= moment(expense.time).format('hh:mm A') %></p>
-             <p>Amount  - &#8358;<%= expense.amount %></p>
-             <p>Status - <%= expense.status %></p>
-             <p><%= expense.Employee.first_name%>'s Role - <span class="text-uppercase"><%= expense.Employee.role %></span> </p>
-             <p>Type - <%= expense.Type.name %></p>
-             <p>Category - <%= expense.Category.name %></p>
-             <p><a href="/expense/<%= expense.id %>/review">Review Expense</a></p>
+             <h1>Details of <%= expense.details %> expense created by <%= expense.Employee.first_name %> <%= expense.Employee.last_name %> </h1>
+             <p>Date  - <strong><%= moment(expense.createdAt).format('DD MMM YYYY') %></strong></p>
+             <p>Time  - <strong><%= moment(expense.time).format('hh:mm A') %></strong></p>
+             <p>Amount  - <strong>&#8358;<%= expense.amount %></strong></p>
+             <p>Status - <strong><%= expense.status %></strong></p>
+             <p><%= expense.Employee.first_name%>'s Role - <strong><span class="text-uppercase"><%= expense.Employee.role %></strong></span> </p>
+             <p>Type - <strong><%= expense.Type.name %><strong></p>
+             <p>Category - <strong><%= expense.Category.name %></strong></p>
+             <p>
+               <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/update" class="badge badge-success ">Edit</a>
+               <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/delete" class="badge badge-danger ">Delete</a>
+               <a href="/expense/<%= expense.id %>/review" class="badge badge-secondary">Review Expense</a>
+             </p>
         </div>    
     </div>
 <% } else if (title == 'Expense List') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-12">    
         <div class="">
         <ol>
         <% expenses.forEach(function(expense) { %>
-                <li>
-                    <h4><a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>"><%= expense.details %></a></h4>
-                    <p><strong>Status</strong> - <%= expense.status %></p>
-                     <a href="/expense/<%= expense.id %>/update">Edit  Author</a> | <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/delete">Delete Expense</a>
-                </li>
-            <br/>
+                <div class="row">
+                  <li class="col-10">
+                      <h4 class="text-capitalize"><a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>"><%= expense.details %></a></h4>
+                      <p><strong>Status</strong> - <%= expense.status %></p>
+                  </li>
+                  <div class="col-2 ml-auto">
+                      <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/update" class="badge badge-success ">Edit</a>  <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/delete" class="badge badge-danger ">Delete</a>
+                  </div>
+                </div>
         <% }); %>
         </ol>
     </div>
@@ -139,20 +132,4 @@
 <% } else { %>
 
 <% } %>
-<!--AUTHOR VIEW END HERE-->
-<script>
-    function checkCat() {
-    var checkBoxes = document.getElementsByClassName( 'categoryCheckbox' );
-    var isChecked = false;
-    for (var i = 0; i < checkBoxes.length; i++) {
-        if ( checkBoxes[i].checked ) {
-            isChecked = true;
-        };
-    };
-    if ( isChecked ) {
-        
-        } else {
-            alert( 'Please, check at least one checkbox!' );
-        }   
-}
-</script>
+<!--Expense VIEW END HERE-->

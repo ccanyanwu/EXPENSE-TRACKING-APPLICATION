@@ -1,18 +1,16 @@
 var Employee = require('../models/employee');
 var models = require('../models');
 var moment = require('moment');
-var sequelize = require('sequelize');
-
 
 // Display employee create form on GET.
 exports.employee_create_get =  async (req, res, next) => {
-        // establish connection between employee, role and deparment
+        // find all departments associated with employee
         const departments = await models.Department.findAll();
          
         res.render('forms/employee_form', { title: 'Create Employee', departments:departments, layout: 'layouts/detail'});
 };
 
-// Handle employee create on Pmployee.
+// Handle employee create on POST.
 exports.employee_create_post = (req, res, next) => {
     
   models.Employee.create({
@@ -25,10 +23,7 @@ exports.employee_create_post = (req, res, next) => {
           role: req.body.role,
           DepartmentId: req.body.department_id
       }).then(function() {
-
-        // check if there was an error during employee creation
           res.redirect('/employees');
-        // res.redirect('/employee/' + amployee_id);
     });
 };
 
@@ -42,13 +37,11 @@ exports.employee_delete_post = function(req, res, next) {
   }).then(function() {
   
     res.redirect('/employees');
-    console.log("Employee deleted successfully");
   });
 };
 
 // Display employee update form on GET.
 exports.employee_update_get = function(req, res, next) {
-  console.log("ID is " + req.params.employee_id);
   models.Employee.findById(
           req.params.employee_id
   ).then((employee) => {
@@ -60,8 +53,7 @@ exports.employee_update_get = function(req, res, next) {
 
 // Handle employee update on POST.
 exports.employee_update_post = (req, res, next) => {
-  // POST logic to update an employee 
-  console.log("ID is " + req.params.employee_id);
+  // POST logic to update an employee
   models.Employee.update(
   // Values to update
       {
@@ -77,10 +69,8 @@ exports.employee_update_post = (req, res, next) => {
       }
    
    ).then(function() { 
-          // If an employee gets updated successfully, we just redirect to employees list
-     
-          res.redirect("/employees");  
-          console.log("employee updated successfully");
+          // If an employee gets updated successfully,redirect to employees list
+          res.redirect("/employees");
     });
 };
 
@@ -90,9 +80,7 @@ exports.employee_list = (req, res, next) => {
   models.Employee.findAll(
   ).then(function(employees) {
   // renders an employee list page
-  console.log("rendering employee list");
   res.render('pages/employee_list', { title: 'Employee List', employees: employees, layout: 'layouts/list'} );
-  console.log("employee list renders successfully");
   });
 };
 
@@ -116,40 +104,37 @@ exports.employee_detail = async function(req, res, next) {
           }
   ).then(function(employee) {
   // renders an inividual employee details page
-  //console.log(department_id.name)
   res.render('pages/employee_detail', { title: 'Employee Details', categories:categories, departments:departments, employee: employee, moment: moment, types:types, layout: 'layouts/detail'} );
-  //console.log("Employee details renders successfully" + res.json(req.aprover));
   });
 };
 
 
-// This is the blog homepage.
+// This is the Maninest expense tracker  homepage.
 exports.index = async function(req, res) {
-  //sum of all the expenses
+  //sum of all the amount in expense model
   let amountSum = await models.Expense.sum('amount');
 
-  //the most recent expense
+  //the most recent expense based on time
   let latest = await models.Expense.findOne({
+    //based on time added
     order: [
       ['time', 'DESC']
     ],
     include:[
       {
         model:models.Employee,
-        attributes: ['id', 'first_name', 'last_name'],
-        
+        attributes: ['id', 'first_name', 'last_name']
       }
     ]
   });
   
-  //expenselisting based on amount
-  let categoryBases = await models.Expense.findAll({
+  //top five expenses based on amount
+  let topExpenses = await models.Expense.findAll({
     include: [
       {
         model: models.Category,
         attributes: ['id' ,'name']
-      }//,
-      //sequelize.fn('max', sequelize.col('amount'))
+      }
     ],
     order: [
       ['amount', 'DESC']
@@ -184,7 +169,7 @@ exports.index = async function(req, res) {
   
 
 
-  // find the count of Employees in database
+  // find the count of Employees,expenses,categories and types in database
   models.Employee.findAndCountAll(
   ).then(function(employeeCount)
   {
@@ -199,8 +184,9 @@ exports.index = async function(req, res) {
   
   {
     res.render('pages/index', {
-        title: 'DASHBOARD', amountSum:amountSum,
-        categoryBases:categoryBases,
+        title: 'DASHBOARD',
+        amountSum:amountSum,
+        topExpenses:topExpenses,
         employeeCount: employeeCount,
         expenseCats:expenseCats, 
         expenseCount: expenseCount,
@@ -216,6 +202,5 @@ exports.index = async function(req, res) {
   });
   });
   });
-  //console.log('I AM THE ONE OOO'+ JSON.stringify(sundays))
-  
+  console.log('I AM THE ONE OOO'+ latest); 
 }

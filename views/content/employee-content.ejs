@@ -1,114 +1,105 @@
 <!--EMPLOYEE VIEW -->
 <!--complete logic for employee view-->
 <% if (title == 'Create Employee') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="" method="post">
-              Author First Name:<br>
-              <input type="text" name="first_name" placeholder="Author First Name">
-              <br><br>
-              Author Last Name:<br>
-              <input type="text" name="last_name" placeholder="Author Last Name">
-              <br><br>
-              Username:<br>
-              <input type="text" name="username" placeholder="hello@manifest.com">
-              <br><br>
-               Author Email Address:<br>
-              <input type="email" name="email" placeholder="hello@manifest.com">
-              <br><br>
-              Author Password:<br>
-              <input type="password" name="password" placeholder="hello@manifest.com">
-              <br><br>
-              Mobile:<br>
-              <input type="number" name="mobile" placeholder="08012345678">
-              <br><br>
-              Author Role:<br>
-              <input type="text" name="role" value="hello@manifest.com">
-              <br><br>
-              Department:<br>
-                <select name = "department_id" class="form-control">
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="" method="post"  class="w-50  mx-auto">
+              <label for="first_name"><strong class="fs">First Name</strong></label>
+              <input class="iw" type="text" name="first_name" placeholder="First Name">
+              <label for="last_name"><strong class="fs">Last Name</strong></label>
+              <input class="iw" type="text" name="last_name" placeholder="Last Name">
+              <label for="username"><strong class="fs">Username</strong></label>
+              <input class="iw" type="text" name="username" placeholder="manifest">
+              <label for="email"><strong class="fs">Email</strong></label>
+              <input class="iw" type="email" name="email" placeholder="hello@manifest.com">
+              <label for="password"><strong class="fs">Password</strong></label>
+              <input class="iw" type="password" name="password" placeholder="m@n1fe$t">
+              <label for="mobile"><strong class="fs">Mobile</strong></label>
+              <input class="iw" type="number" name="mobile" placeholder="08012345678">
+              <label for="role"><strong class="fs">Role</strong></label>
+              <input class="iw" type="text" name="role" placeholder="hello@manifest.com">
+              <label for="department"><strong class="fs">Department</strong></label>
+                <select class="iw" name = "department_id" class="form-control">
                     <% departments.forEach((department) => { %>
-                    <option  value="<%= department.id %>"><%= department.name %></option>
+                    <option class="iw" value="<%= department.id %>"><%= department.name %></option>
                     <br/>
                     <% }); %>
                 </select>
               <br><br>
-              <input type="submit" value="Create Employee">
+              <input class="ib" type="submit" value="Create Employee">
             </form>
         </div>
     </div>
-<% } else if (title == 'Delete Author') { %>
-     
-<% } else if (title == 'Update Employee') { %>
-    <div class="col-sm-8">    
-        <div class="jumbotron">
-            <form action="/employee/<%= employee.id %>/update" method="post">
-               USERNAME:<br>
-              <input type="text" name="username" value="<%= employee.username %>">
-              <br><br>
-              ROLE:<br>
-              <input type="text" name="role" value="<%= employee.role %>">
-              <br><br>
-               MOBILE:<br>
-              <input type="number" name="mobile" value="<%= employee.mobile %>">
-              <br><br>
-              <input type="submit" value="Update employee">
+<% }else if (title == 'Update Employee') { %>
+    <div class="col-sm-12">    
+        <div class="">
+            <form action="/employee/<%= employee.id %>/update" method="post" class="w-50  mx-auto">
+                <label for="username"><strong class="fs">USERNAME</strong></label>
+                <input class="iw" type="text" name="username" value="<%= employee.username %>">
+                <label for="role"><strong class="fs">ROLE</strong></label>
+                <input class="iw" type="text" name="role" value="<%= employee.role %>">
+                <label for="mobile"><strong class="fs">MOBILE</strong></label>
+                <input class="iw" type="text" name="mobile" value="0<%= employee.mobile %>">
+                <input type="submit" class="ib" value="Update employee">
             </form>
         </div>
     </div>
 <% } else if (title == 'Employee Details') { %>
-    <div class="col-sm-8">    
+    <div class="col-sm-12">    
         <div class="">
              <h1><%= employee.first_name %> <%= employee.last_name %> Details </h1>
-             <p>ID : <%= employee.id %></p>
-             <p>First Name: <%= employee.first_name %></p>
-             <p>Last Name:  <%= employee.last_name %></p>
-             <p>Username:  <%= employee.username %></p>
-             <p> <span class="text-capitalize"> <%= employee.role %></span> in the <%= employee.Department.name %> department. Contact <%= employee.username %> via email <%= employee.email %> or mobile - 0<%= employee.mobile %></p>
-             <a href="/employee/<%= employee.id %>/update">Edit  employee</a> | <a href="/employee/<%= employee.id %>/delete">Delete employee</a>
+             <p>ID : <strong><%= employee.id %></strong></p>
+             <p>First Name: <strong><%= employee.first_name %></strong></p>
+             <p>Last Name:  <strong><%= employee.last_name %></strong></p>
+             <p>Username:  <strong><%= employee.username %></strong></p>
+             <p> <span class="text-capitalize"> <strong><%= employee.role %></strong></span> in the <strong><%= employee.Department.name %></strong> department. Contact <strong><%= employee.username %></strong> via email <strong><%= employee.email %></strong> or mobile - <strong>0<%= employee.mobile %></strong></p>
+             <a href="/employee/<%= employee.id %>/update" class=" badge badge-success">Edit Employee</a>  <a href="/employee/<%= employee.id %>/delete" class="badge badge-danger">Delete Employee</a>
         
         <% if(employee.Expenses.length == 0) { %>
-            <h2>You haven't added any expenditure yet </h2>
+            <div class="alert alert-info mt-5 w-50">
+                <strong>Info:</strong> You don't have any expense yet, <a href="/employee/<%= employee.id %>/expense/create" class="alert-link">add one here</a>.
+              </div>
         <% } else { %>
-            <h2>All Expenses by this Author</h2>
+            <h4 class="mt-5 fwb">Expenses for this Employee are listed below</h4>
             <div class="">
                 <% if((employee.role.toLowerCase()) == 'manager'){ %> 
                     <ol>
                         <% employee.Expenses.forEach(function(expense) { %>
-                                <li>
-                                    <p> 
-                                        <a href="/employee/:employee_id/expense/<%= expense.id %>"><%= expense.details %></a>
-                                         
-                                        <br/> <a href="/expense/<%= expense.id %>/update">Edit  Expense</a> | <a href="/employee/:employee_id/expense/<%= expense.id %>/delete">Delete Expense</a>
-                                        <p><a href="/expense/<%= expense.id %>/review">Review Expense</a></p>
-                                    </p>
+                            <div class="row">
+                                <li class="col-9">
+                                    <a href="/employee/:employee_id/expense/<%= expense.id %>"><%= expense.details %></a></h4>
                                 </li>
+                                <div class="col-3 mr-auto">
+                                    <a href="/employee/<%= employee.id %>/expense/<%= expense.id %>/update" class="badge badge-success">Edit</a>  
+                                    <a href="/employee/:employee_id/expense/<%= expense.id %>/delete" class="badge badge-danger">Delete</a>
+                                    <a href="/expense/<%= expense.id %>/review" class="badge badge-secondary">Review</a>
+                                </div>
+                            </div>
                             <br/>
                         <% }); %>
                         </ol>
                     <% } else { %> 
                         <ol>
                             <% employee.Expenses.forEach(function(expense) { %>
-                                    <li>
-                                        <p> 
-                                            <a href="/employee/:employee_id/expense/<%= expense.id %>"><%= expense.details %></a>
-                                             
-                                            <br/> <a href="/expense/<%= expense.id %>/update">Edit  Expense</a> | <a href="/employee/:employee_id/expense/<%= expense.id %>/delete">Delete Expense</a>
-                                        </p>
-                                    </li>
+                                    
+                                    <div class="row">
+                                        <li class="col-9">
+                                            <a href="/employee/:employee_id/expense/<%= expense.id %>"><%= expense.details %></a></h4>
+                                        </li>
+                                        <div class="col-3 mr-auto">
+                                            <a href="/employee/<%= employee.id %>/expense/<%= expense.id %>/update" class="badge badge-success">Edit</a>  
+                                            <a href="/employee/<%= employee.id %>/expense/<%= expense.id %>/delete" class="badge badge-danger">Delete</a>
+                                        </div>
+                                    </div>
                                 <br/>
                             <% }); %>
-                            </ol>
+                            </ol>     
                         <% }
-                %>
-                
+                    %>
+                <a href="/employee/<%= employee.id %>/expense/create" class="btn btn-primary pill">Add another Expense </a>
             </div>    
          <% } %>   
         </div>
-        
-        <h2>Add a new Expense </h2>
-        <!--DISPLAY CREATE FORM IN AUTHOR-->
-        <a href="/employee/<%= employee.id %>/expense/create">Create Expense</a>
             
         
         
@@ -116,34 +107,22 @@
 <% } else if (title == 'Employee List') { %>
     <div class="col-sm-12">    
         <div class="">
-        <ol>
-        <% employees.forEach(function(employee) { %>
-                <li>
-                    <h4 class="text-capitalize"><a href="/employee/<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></a></h4>
-                     <a href="/employee/<%= employee.id %>/update">Edit  Employee</a> | <a href="/employee/<%= employee.id %>/delete">Delete Employee</a>
-                </li>
-            <br/>
-        <% }); %>
-        </ol>
-    </div>
+            <ol>
+            <% employees.forEach(function(employee) { %>
+                <div class="row">
+                    <li class="col-10">
+                        <h4 class="text-capitalize"><a href="/employee/<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></a></h4>
+                    </li>
+                    <div class="col-2 mr-auto">
+                        <a href="/employee/<%= employee.id %>/update" class="badge badge-success ">Edit</a>  <a href="/employee/<%= employee.id %>/delete" class="badge badge-danger ">Delete</a>
+                    </div>
+                </div>
+                <br/>
+            <% }); %>
+            </ol>
+        </div>
+        <a href="/employee/create" class="btn btn-primary pill">Add Your Employee Record </a>
     </div>
 <% } else { %>
 
 <% } %>
-<!--AUTHOR VIEW END HERE-->
-<script>
-    function checkCat() {
-    var checkBoxes = document.getElementsByClassName( 'categoryCheckbox' );
-    var isChecked = false;
-    for (var i = 0; i < checkBoxes.length; i++) {
-        if ( checkBoxes[i].checked ) {
-            isChecked = true;
-        };
-    };
-    if ( isChecked ) {
-        
-        } else {
-            alert( 'Please, check at least one checkbox!' );
-        }   
-}
-</script>
