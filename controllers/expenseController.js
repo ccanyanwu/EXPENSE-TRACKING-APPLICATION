@@ -1,7 +1,10 @@
 var Expense = require('../models/expense');
 var models = require('../models');
 var moment = require('moment');
-var sequelize = require('sequelize');
+
+const bodyParser = require('body-parser');
+const { check, validationResult } = require('express-validator');
+const urlencodedParser = bodyParser.urlencoded({extended:false});
 
 
 
@@ -30,30 +33,63 @@ exports.expense_create_get =  async (req, res, next) => {
     });
         ;
 };
-
+//isMobilePhone()
 // Handle expense create on POST.
-exports.expense_create_post = function(req, res, next) {
-  let employee_id = req.body.employee_id;
-    
-  //logic to check for amount and set status
-  let getAmount = req.body.amount,
-      getStatus = '';
+exports.expense_create_post =[ urlencodedParser,
+  [
+    check('details', 'details field cannot be empty and must be at least 3 characters long').exists().isLength({min: 3}),
+    check('amount', 'enter a valid amount').isNumeric().exists()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
 
-      if(getAmount < 1000){getStatus = 'Approved';}
-      else{getStatus = 'Pending'}
-    
-     models.Expense.create({
-           details: req.body.details,
-           amount: req.body.amount,
-           EmployeeId: req.body.employee_id,
-           TypeId: req.body.type_id,
-           CategoryId: req.body.category_id,
-           status: getStatus,
+    // connect with employee, type and categories
+    const types = await models.Type.findAll();
+    const categories = await models.Category.findAll();
 
-       }).then(function() {
-           res.redirect('/employee/' + employee_id);
-     });
-};
+  let employee = await  models.Employee.findById(
+      req.params.employee_id, {
+      include: [
+        {
+          model: models.Expense
+        },
+        {
+          model: models.Department,
+          attributes: ['id', 'name']
+        }
+      ]
+      }
+)
+    if(!errors.isEmpty()){
+      //return res.status(422).jsonp(errors.array());
+      const notice = errors.array();
+      res.render('forms/expense_form', { title: 'Create Expense', categories:categories, employee: employee, notice, types:types, layout: 'layouts/detail'});
+    } else {
+      let employee_id = req.body.employee_id;
+      
+    //logic to check for amount and set status
+    let getAmount = req.body.amount,
+        getStatus = '';
+  
+        if(getAmount < 1000){getStatus = 'Approved';}
+        else{getStatus = 'Pending'}
+      
+       models.Expense.create({
+             details: req.body.details,
+             amount: req.body.amount,
+             EmployeeId: req.body.employee_id,
+             TypeId: req.body.type_id,
+             CategoryId: req.body.category_id,
+             status: getStatus,
+  
+         }).then(function() {
+             res.redirect('/employee/' + employee_id);
+       });
+    }
+    
+    
+  }
+] 
 
 // Display Expense delete  GET.
 exports.expense_delete_post = function(req, res, next) {

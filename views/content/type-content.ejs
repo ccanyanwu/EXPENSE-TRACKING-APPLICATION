@@ -1,8 +1,19 @@
-<!--Cype VIEW-->
+<!--Type VIEW-->
 <!--complete logic for type view-->
 <% if (title == 'Create Type') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12">   
+        <h2 class="display3 fwb">Add A New Expense Type</h2> 
         <div class="">
+            <!--error notice-->
+            <% if(typeof notice != 'undefined') { %>
+                <div class="alert alert-danger alert-dismissible w-75 mx-auto">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <% notice.forEach((error) => { %>
+                        <strong><%= error.msg %></strong> <br> 
+                <% }) %>
+                </div>
+                <% } 
+              %>
             <form action="" method="post" class="w-50  mx-auto">
               <label for="name"><strong class="fs">Type Name</strong></label>
               <input class="iw" type="text" name="name" placeholder="Type Name">
@@ -11,7 +22,8 @@
         </div>
     </div>
 <% } else if (title == 'Update Type') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12">  
+      <h2 class="display-4 mb-5">Update <%= type.name %> Category</h2>
         <div class="">
             <form action="/type/<%= type.id %>/update" method="post" class="w-50  mx-auto">
                 <label for="name"><strong class="fs">Type Name</strong></label>
@@ -57,7 +69,8 @@
         <% } %>
     </div>
 <% } else if (title == 'Type List') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12">   
+      <h2 class="display-4 mb-5">List of All Expense Type</h2>
         <div class="">
         <ol>
         <% types.forEach(function(type) { %>

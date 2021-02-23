@@ -1,8 +1,18 @@
 <!--EMPLOYEE VIEW -->
 <!--complete logic for employee view-->
 <% if (title == 'Create Employee') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12">  
+        <h2 class="display-4 mb-5">Add a New Employee</h2>
         <div class="">
+            <!--error notice-->
+            <% if(typeof notice != 'undefined') { %>
+                <div class="alert alert-danger alert-dismissible w-75 mx-auto">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <% notice.forEach((error) => { %>
+                        <strong><%= error.msg %></strong> <br> 
+                <% }) %>
+                </div>
+            <% } %>
             <form action="" method="post"  class="w-50  mx-auto">
               <label for="first_name"><strong class="fs">First Name</strong></label>
               <input class="iw" type="text" name="first_name" placeholder="First Name">
@@ -31,8 +41,18 @@
         </div>
     </div>
 <% }else if (title == 'Update Employee') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12"> 
+        <h2 class="display-4 mb-5">Update <%= employee.username %> Details</h2>
         <div class="">
+            <!--error notice-->
+            <% if(typeof notice != 'undefined') { %>
+                <div class="alert alert-danger alert-dismissible w-75 mx-auto">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <% notice.forEach((error) => { %>
+                        <strong><%= error.msg %></strong> <br> 
+                <% }) %>
+                </div>
+            <% } %>
             <form action="/employee/<%= employee.id %>/update" method="post" class="w-50  mx-auto">
                 <label for="username"><strong class="fs">USERNAME</strong></label>
                 <input class="iw" type="text" name="username" value="<%= employee.username %>">
@@ -105,7 +125,8 @@
         
     </div>
 <% } else if (title == 'Employee List') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12">  
+        <h2 class="display-4 mb-5">List of All Employees</h2>
         <div class="">
             <ol>
             <% employees.forEach(function(employee) { %>

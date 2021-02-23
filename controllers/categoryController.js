@@ -1,6 +1,9 @@
 var Category = require('../models/category');
 var models = require('../models');
 
+const bodyParser = require('body-parser');
+const { check, validationResult } = require('express-validator');
+const urlencodedParser = bodyParser.urlencoded({extended:false});
 // Display category create form on GET.
 exports.category_create_get = function(req, res, next) {
         // renders a category form
@@ -8,13 +11,27 @@ exports.category_create_get = function(req, res, next) {
 };
 
 // Handle category create on POST.
-exports.category_create_post = function(req, res, next) {
+exports.category_create_post = [ urlencodedParser,
+  [
+    check('name', 'Name field cannot be empty and must be at least 3 characters long').exists().isLength({min: 3})
+  ],
+    (req, res, next) => {
+     //store errors here
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+      //return res.status(422).jsonp(errors.array());
+      const notice = errors.array();
+      res.render('forms/category_form', { title: 'Create Category', notice, layout: 'layouts/detail'});
+    }else{
       models.Category.create({
-            name: req.body.name 
+        name: req.body.name 
         }).then(function() {
             res.redirect('/categories');
       });
-};
+    }  
+  }
+] 
 
 // Handle category delete on POST.
 exports.category_delete_post = function(req, res, next) {

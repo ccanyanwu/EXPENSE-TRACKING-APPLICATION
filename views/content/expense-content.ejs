@@ -3,7 +3,17 @@
 <% if (title == 'Create Expense') { %>
     <div class="col-sm-12">    
         <div class="">
-          <h2 class="display-4">Expense Form</h2>
+          <h2 class="display-4 mb-5">Expense Form</h2>
+            <!--error notice-->
+            <% if(typeof notice != 'undefined') { %>
+              <div class="alert alert-danger alert-dismissible w-75 mx-auto">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <% notice.forEach((error) => { %>
+                      <strong><%= error.msg %></strong> <br> 
+              <% }) %>
+              </div>
+              <% } 
+            %>
             <form action="" method="post" class="w-50  mx-auto">
               <label for="details"><strong class="fs">Details</strong></label>
               <input class="iw" type="text" name="details" placeholder="expense detail">
@@ -33,7 +43,9 @@
         </div>
     </div>
 <% } else if (title == 'Review Expense') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12"> 
+      <h2 class="display-4 mb-5">Review <%= expense.details %> Expense</h2>
+
         <div class="">
             <form action="/expense/<%= expense.id %>/review" method="post" class="w-50  mx-auto">
               <label for="details"><strong class="fs">Details</strong></label>
@@ -67,7 +79,8 @@
         </div>
     </div>
 <% } else if (title == 'Update Expense') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12"> 
+      <h2 class="display-4 mb-5">Update <%= expense.details %> Expense</h2>
         <div class="">
             <form action="/expense/<%= expense.id %>/update" method="post" class="w-50  mx-auto">
               <label for="details"><strong class="fs">Details</strong></label>
@@ -93,8 +106,8 @@
         </div>
     </div>
 <% } else if (title == 'Expense Details') { %>
-    <div class="col-sm-12">    
-        <div class="">
+    <div class="col-sm-12">
+      <div class="">
              <h1>Details of <%= expense.details %> expense created by <%= expense.Employee.first_name %> <%= expense.Employee.last_name %> </h1>
              <p>Date  - <strong><%= moment(expense.createdAt).format('DD MMM YYYY') %></strong></p>
              <p>Time  - <strong><%= moment(expense.time).format('hh:mm A') %></strong></p>
@@ -111,7 +124,8 @@
         </div>    
     </div>
 <% } else if (title == 'Expense List') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12"> 
+      <h2 class="display-4 mb-5">All Expenses Created</h2>
         <div class="">
         <ol>
         <% expenses.forEach(function(expense) { %>
@@ -127,7 +141,7 @@
         <% }); %>
         </ol>
     </div>
-    
+    <small><em>you can only add a new expense through an employee detail page</em></small>
     </div>
 <% } else { %>
 

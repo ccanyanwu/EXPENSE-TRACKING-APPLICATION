@@ -1,6 +1,9 @@
 var Employee = require('../models/employee');
 var models = require('../models');
 var moment = require('moment');
+const bodyParser = require('body-parser');
+const { check, validationResult } = require('express-validator');
+const urlencodedParser = bodyParser.urlencoded({extended:false});
 
 // Display employee create form on GET.
 exports.employee_create_get =  async (req, res, next) => {
@@ -11,21 +14,40 @@ exports.employee_create_get =  async (req, res, next) => {
 };
 
 // Handle employee create on POST.
-exports.employee_create_post = (req, res, next) => {
+exports.employee_create_post =  [ urlencodedParser, 
+  [
+    check('first_name', 'First name must be valid and not less than 3 characters').exists().isLength({min: 3}),
+    check('last_name', 'Last name must be valid and not less than 3 characters').exists().isLength({min: 3}),
+    check('username', 'Username must be valid and not less than 3 characters').exists().isLength({min: 3}),
+    check('email', 'email is not valid').isEmail().normalizeEmail(),
+    check('password', 'password must be between 7 and 20 characters').isLength({min: 7, max:42})],
+  async (req, res) => {
     
-  models.Employee.create({
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          username: req.body.username,
-          email: req.body.email,
-          password: req.body.password,
-          mobile: req.body.mobile,
-          role: req.body.role,
-          DepartmentId: req.body.department_id
-      }).then(function() {
-          res.redirect('/employees');
-    });
-};
+    //res.json(req.body);
+    const errors = validationResult(req);
+    // find all departments associated with employee
+    const departments = await models.Department.findAll();
+
+    if(!errors.isEmpty()){
+      //return res.status(422).jsonp(errors.array());
+       const notice = errors.array();
+       res.render('forms/employee_form', { title: 'Create Employee', departments, notice, layout: 'layouts/detail'});
+  } else {
+    models.Employee.create({
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            mobile: req.body.mobile,
+            role: req.body.role,
+            DepartmentId: req.body.department_id
+        }).then(function() {
+            res.redirect('/employees');
+      });
+    }
+    }
+  ];
 
 
 // Display Employee delete  GET.
@@ -52,7 +74,7 @@ exports.employee_update_get = function(req, res, next) {
 };
 
 // Handle employee update on POST.
-exports.employee_update_post = (req, res, next) => {
+exports.employee_update_post = (req, res, next) =>{ 
   // POST logic to update an employee
   models.Employee.update(
   // Values to update
@@ -72,7 +94,7 @@ exports.employee_update_post = (req, res, next) => {
           // If an employee gets updated successfully,redirect to employees list
           res.redirect("/employees");
     });
-};
+  }
 
 // Display list of all employees.
 exports.employee_list = (req, res, next) => {
