@@ -1,8 +1,19 @@
 <!--CATEGORY VIEW-->
 <!--complete logic for category view-->
 <% if (title == 'Create Category') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12">   
+      <h2 class="display-4 mb-5">Create a New Category</h2>
         <div class="">
+            <!--error notice-->
+            <% if(typeof notice != 'undefined') { %>
+                <div class="alert alert-danger alert-dismissible w-75 mx-auto">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <% notice.forEach((error) => { %>
+                        <strong><%= error.msg %></strong> <br> 
+                <% }) %>
+                </div>
+                <% } 
+              %>
             <form action="" method="post" class="w-50  mx-auto">
               <label for="name"><strong class="fs">Category Name</strong></label>
               <input class="iw" type="text" name="name" placeholder="Category Name">
@@ -11,7 +22,8 @@
         </div>
     </div>
 <% } else if (title == 'Update Category') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12"> 
+      <h2 class="display-4 mb-5">Update <%= category.name %> Category</h2>
         <div class="">
             <form action="/category/<%= category.id %>/update" method="post" class="w-50  mx-auto">
                 <label for="name"><strong class="fs">Category Name</strong></label>
@@ -57,7 +69,8 @@
          <a href="/category/create" class="btn btn-primary pill">Add a new Category </a>
     </div>
 <% } else if (title == 'Category List') { %>
-    <div class="col-sm-12">    
+    <div class="col-sm-12"> 
+      <h2 class="display-4 mb-5">List of All Categories</h2>
         <div class="">
         <ol>
         <% categories.forEach(function(category) { %>

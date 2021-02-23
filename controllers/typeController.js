@@ -1,6 +1,9 @@
 var Type = require('../models/type');
 var models = require('../models');
 
+const bodyParser = require('body-parser');
+const { check, validationResult } = require('express-validator');
+const urlencodedParser = bodyParser.urlencoded({extended:false});
 // Display type create form on GET.
 exports.type_create_get = function(req, res, next) {
         // renders a type form
@@ -8,14 +11,27 @@ exports.type_create_get = function(req, res, next) {
 };
 
 // Handle type create on POST.
-exports.type_create_post = function(req, res, next) {
-     // If a type gets created successfully, redirect to categories list
-      models.Type.create({
-            name: req.body.name 
-        }).then(function() {
-            res.redirect('/types');
-      });
-};
+exports.type_create_post = [ urlencodedParser,
+  [
+    check('name', 'Name field cannot be empty and must be at least 3 characters long').exists().isLength({min: 3})
+  ],
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+      //return res.status(422).jsonp(errors.array());
+      const notice = errors.array();
+      res.render('forms/type_form', { title: 'Create Type', notice, layout: 'layouts/detail'});
+    }else{
+    // If a type gets created successfully, redirect to categories list
+     models.Type.create({
+           name: req.body.name 
+       }).then(function() {
+           res.redirect('/types');
+     });
+    }
+  }
+];
 
 // Handle type delete on POST.
 exports.type_delete_post = function(req, res, next) {
