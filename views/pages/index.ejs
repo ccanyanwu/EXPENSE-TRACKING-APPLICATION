@@ -72,7 +72,7 @@
         <% expenseTypes.forEach(expenseType => { %> 
             <p class="fwb"><%= expenseType.name %></p>
             <%if(expenseType.Expenses.length == 0){%> 
-                <p>There are no <%= expenseType.name %> under this category yet</p>
+                <p>There are no <%= expenseType.name %> expenses under this type yet</p>
             <%}else{%> 
                 <ol>
                 <% expenseType.Expenses.forEach(item => { %> 
