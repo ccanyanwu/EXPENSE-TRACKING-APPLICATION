@@ -20,7 +20,10 @@ exports.employee_create_post =  [ urlencodedParser,
     check('last_name', 'Last name must be valid and not less than 3 characters').exists().isLength({min: 3}),
     check('username', 'Username must be valid and not less than 3 characters').exists().isLength({min: 3}),
     check('email', 'email is not valid').isEmail().normalizeEmail(),
-    check('password', 'password must be between 7 and 20 characters').isLength({min: 7, max:42})],
+    check('password', 'password must be between 7 and 20 characters').isLength({min: 7, max:42}),
+    check('role', 'please input a valid role not less than 3 characters').exists().isLength({min: 3}),
+    check('mobile', 'please input a valid mobile number').exists().isNumeric(),
+  ],
   async (req, res) => {
     
     //res.json(req.body);
