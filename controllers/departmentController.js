@@ -2,8 +2,7 @@ var Department = require('../models/department');
 var models = require('../models');
 
 // Display department create form on GET.
-exports.department_create_get =  (req, res, next) => { 
-        
+exports.department_create_get =  (req, res, next) => {        
         // renders a department form
         res.render('forms/department_form', { title: 'Create Department',  layout: 'layouts/detail'});
 };
@@ -13,8 +12,7 @@ exports.department_create_post =  (req, res, next) => {
       // If a type gets created successfully, redirect to types list
      models.Department.create({
       name: req.body.name 
-  }).then(function(error) {
-    console.table(error)
+  }).then(() => {
     res.redirect('/departments');
   });
 };
@@ -27,9 +25,8 @@ exports.department_delete_post = (req, res, next) => {
       where: {
         id: req.params.department_id
       }
-    }).then(function() {
-     // If a department gets deleted successfully,redirect to departments list
-     
+    }).then(() => {
+     // If a department gets deleted successfully,redirect to departments list 
      res.redirect('/departments');
     });
 };
@@ -47,7 +44,7 @@ exports.department_detail = async function(req, res, next) {
               }
           ]
         }
-  ).then(function(department) {
+  ).then((department) => {
   // renders an inividual department details page
   res.render('pages/department_detail', { title: 'department Details', department, layout: 'layouts/detail'} );
   });
@@ -67,8 +64,8 @@ exports.department_list = (req, res, next) => {
       ]
     }
   )
-  .then(function(departments) {
+  .then((departments) => {
   // renders an department list page
-  res.render('pages/department_list', { title: 'Department List', departments:departments, layout: 'layouts/list'} );
+  res.render('pages/department_list', { title: 'Department List', departments, layout: 'layouts/list'} );
   });
 };

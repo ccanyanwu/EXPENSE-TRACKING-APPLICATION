@@ -1,5 +1,6 @@
 var Employee = require('../models/employee');
 var models = require('../models');
+
 var moment = require('moment');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
@@ -10,7 +11,7 @@ exports.employee_create_get =  async (req, res, next) => {
         // find all departments associated with employee
         const departments = await models.Department.findAll();
          
-        res.render('forms/employee_form', { title: 'Create Employee', departments:departments, layout: 'layouts/detail'});
+        res.render('forms/employee_form', { title: 'Create Employee', departments, layout: 'layouts/detail'});
 };
 
 // Handle employee create on POST.
@@ -26,13 +27,12 @@ exports.employee_create_post =  [ urlencodedParser,
   ],
   async (req, res) => {
     
-    //res.json(req.body);
     const errors = validationResult(req);
+
     // find all departments associated with employee
     const departments = await models.Department.findAll();
 
     if(!errors.isEmpty()){
-      //return res.status(422).jsonp(errors.array());
        const notice = errors.array();
        res.render('forms/employee_form', { title: 'Create Employee', departments, notice, layout: 'layouts/detail'});
   } else {
@@ -52,69 +52,80 @@ exports.employee_create_post =  [ urlencodedParser,
     }
   ];
 
-
 // Display Employee delete  GET.
-exports.employee_delete_post = function(req, res, next) {
+exports.employee_delete_post = (req, res, next) => {
   models.Employee.destroy({
      where: {
       id: req.params.employee_id
     }
-  }).then(function() {
+  }).then(() => {
   
     res.redirect('/employees');
   });
 };
 
 // Display employee update form on GET.
-exports.employee_update_get = function(req, res, next) {
+exports.employee_update_get = (req, res, next) => {
   models.Employee.findById(
           req.params.employee_id
   ).then((employee) => {
          // renders an employee form
-         res.render('forms/employee_form', { title: 'Update Employee', employee: employee, layout: 'layouts/detail'});
-         console.log("employee update get successful");
+         res.render('forms/employee_form', { title: 'Update Employee', employee, layout: 'layouts/detail'});
     });
 };
 
 // Handle employee update on POST.
-exports.employee_update_post = (req, res, next) =>{ 
-  // POST logic to update an employee
-  models.Employee.update(
-  // Values to update
-      {
-          username: req.body.username,
-          role: req.body.role,
-          mobile: req.body.mobile
-      },
-    { // Clause
-          where: 
-          {
-              id: req.params.employee_id
-          }
+exports.employee_update_post = [ urlencodedParser, 
+  [
+    check('username', 'Username cannot be empty and must not less than 3 characters').exists().isLength({min: 3}),
+    check('role', 'please input a valid role not less than 3 characters').exists().isLength({min: 3}),
+    check('mobile', 'please input a valid mobile number').exists().isNumeric(),
+  ],
+  async (req, res, next) => {
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+      let employee = await models.Employee.findById(req.params.employee_id)
+       const notice = errors.array();
+       res.render('forms/employee_form', { title: 'Update Employee', employee, notice, layout: 'layouts/detail'});
+  } else{ models.Employee.update(
+    // Values to update
+        {
+            username: req.body.username,
+            role: req.body.role,
+            mobile: req.body.mobile
+        },
+      { // Clause
+            where: 
+            {
+                id: req.params.employee_id
+            }
+        }
+    
+    ).then(() => { 
+            // If an employee gets updated successfully,redirect to employees list
+            res.redirect("/employees");
+      });
       }
-   
-   ).then(function() { 
-          // If an employee gets updated successfully,redirect to employees list
-          res.redirect("/employees");
-    });
-  }
+    }
+  ]
 
 // Display list of all employees.
 exports.employee_list = (req, res, next) => {
   // GET controller logic to list all employees
   models.Employee.findAll(
-  ).then(function(employees) {
+  ).then((employees) => {
   // renders an employee list page
-  res.render('pages/employee_list', { title: 'Employee List', employees: employees, layout: 'layouts/list'} );
+  res.render('pages/employee_list', { title: 'Employee List', employees, layout: 'layouts/list'} );
   });
 };
 
-
 // Display detail page for a specific employee.
-exports.employee_detail = async function(req, res, next) {
+exports.employee_detail = async (req, res, next) => {
   const departments = await models.Department.findAll();
   const categories = await models.Category.findAll();
   const types = await models.Type.findAll();
+
   models.Employee.findById(
           req.params.employee_id, {
           include: [
@@ -128,15 +139,14 @@ exports.employee_detail = async function(req, res, next) {
             }
           ]
           }
-  ).then(function(employee) {
+  ).then((employee) => {
   // renders an inividual employee details page
-  res.render('pages/employee_detail', { title: 'Employee Details', categories:categories, departments:departments, employee: employee, moment: moment, types:types, layout: 'layouts/detail'} );
+  res.render('pages/employee_detail', { title: 'Employee Details', categories, departments,  employee,  moment, types, layout: 'layouts/detail'} );
   });
 };
 
-
-// This is the Maninest expense tracker  homepage.
-exports.index = async function(req, res) {
+// This is the Manifest expense tracker  homepage.
+exports.index = async (req, res) => {
   //sum of all the amount in expense model
   let amountSum = await models.Expense.sum('amount');
 
@@ -160,6 +170,10 @@ exports.index = async function(req, res) {
       {
         model: models.Category,
         attributes: ['id' ,'name']
+      },
+      {
+        model: models.Employee,
+        attributes: ['id' ,'first_name', 'last_name']
       }
     ],
     order: [
@@ -218,20 +232,18 @@ exports.index = async function(req, res) {
     }
   );
   
-
-
   // find the count of Employees,expenses,categories and types in database
   models.Employee.findAndCountAll(
-  ).then(function(employeeCount)
+  ).then((employeeCount) =>
   {
     models.Expense.findAndCountAll(
-  ).then(function(expenseCount)
+  ).then((expenseCount) =>
   {
     models.Category.findAndCountAll(
-  ).then(function(categoryCount)
+  ).then((categoryCount) =>
   {
     models.Type.findAndCountAll(
-  ).then(function(typeCount)
+  ).then((typeCount) =>
   
   {
     res.render('pages/index', { title: 'DASHBOARD', amountSum, topExpenses, deptExpense, employeeCount,expenseCats, expenseCount, expenseTypes, categoryCount, expenseDepts, latest, moment, typeCount, layout: 'layouts/main'});
