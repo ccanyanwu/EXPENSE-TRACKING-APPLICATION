@@ -23,9 +23,9 @@ exports.expense_create_get =  async (req, res, next) => {
             }
           ]
           }
-  ).then(function(employee) {
+  ).then((employee) => {
     // renders a personalized expense form
-    res.render('forms/expense_form', { title: 'Create Expense', categories:categories, departments:departments, employee: employee, types:types, layout: 'layouts/detail'} );
+    res.render('forms/expense_form', { title: 'Create Expense', categories, departments, employee, types, layout: 'layouts/detail'} );
     
     });
         ;
@@ -50,18 +50,13 @@ exports.expense_create_post =[ urlencodedParser,
       include: [
         {
           model: models.Expense
-        }/*,
-        {
-          model: models.Department,
-          attributes: ['id', 'name']
-        }*/
-      ]
+        }
+       ]
       }
 )
     if(!errors.isEmpty()){
-      //return res.status(422).jsonp(errors.array());
       const notice = errors.array();
-      res.render('forms/expense_form', { title: 'Create Expense', categories:categories, departments, employee: employee, notice, types:types, layout: 'layouts/detail'});
+      res.render('forms/expense_form', { title: 'Create Expense', categories, departments, employee, notice, types, layout: 'layouts/detail'});
     } else {
       let employee_id = req.body.employee_id;
       
@@ -81,7 +76,7 @@ exports.expense_create_post =[ urlencodedParser,
              CategoryId: req.body.category_id,
              status: getStatus,
   
-         }).then(function() {
+         }).then(() => {
              res.redirect('/employee/' + employee_id);
        });
     }
@@ -91,12 +86,12 @@ exports.expense_create_post =[ urlencodedParser,
 ] 
 
 // Display Expense delete  GET.
-exports.expense_delete_post = function(req, res, next) {
+exports.expense_delete_post = (req, res, next) => {
   models.Expense.destroy({
      where: {
       id: req.params.expense_id
     }
-  }).then(function() {
+  }).then(() => {
   
     res.redirect('/expenses');
   });
@@ -110,41 +105,60 @@ exports.expense_update_get = async (req, res, next) => {
 
   models.Expense.findById(
           req.params.expense_id
-  ).then(function(expense) {
+  ).then((expense) => {
          // renders an  update form
-         res.render('forms/expense_form', { title: 'Update Expense', categories:categories, departments, expense: expense, types:types, layout: 'layouts/detail'});
+         res.render('forms/expense_form', { title: 'Update Expense', categories, departments, expense, types, layout: 'layouts/detail'});
     });
 };
 
 // Handle EXPENSE update on POST.
-exports.expense_update_post = function(req, res, next) {
-  
-  //logic for expense status
-  let getAmount = req.body.amount,
-      getStatus = '';
+exports.expense_update_post =[ urlencodedParser,
+  [
+    check('details', 'details field cannot be empty and must be at least 3 characters long').exists().isLength({min: 3}),
+    check('amount', 'enter a valid amount').isNumeric().exists()
+  ],
+    async(req, res, next) => {
+      //store errors
+      const errors = validationResult(req);
+      if(!errors.isEmpty()){
+        const departments = await models.Department.findAll();
+        const types = await models.Type.findAll();
+        const categories = await models.Category.findAll();
 
-      if(getAmount < 1000){getStatus = 'approved';}
-      else{getStatus = 'pending'}
-  models.Expense.update(
-  // Values to update
-      {
-          details: req.body.details,
-          amount: getAmount,
-          DepartmentId: req.body.department_id,
-          TypeId: req.body.type_id,
-          CategoryId: req.body.category_id,
-          status:getStatus
-      },
-    { // Clause
-          where: 
-          {
-              id: req.params.expense_id
-          }
-      } 
-   ).then(function() { 
-          res.redirect("/expenses");
-    });
-};
+        let expense = await models.Expense.findById(req.params.expense_id)
+
+        const notice = errors.array();
+        res.render('forms/expense_form', { title: 'Update Expense', categories, departments, expense, notice, types, layout: 'layouts/detail'});
+      } else{
+
+          //logic for expense status
+          let getAmount = req.body.amount,
+              getStatus = '';
+
+              if(getAmount < 1000){getStatus = 'approved';}
+              else{getStatus = 'pending'}
+          models.Expense.update(
+          // Values to update
+              {
+                  details: req.body.details,
+                  amount: getAmount,
+                  DepartmentId: req.body.department_id,
+                  TypeId: req.body.type_id,
+                  CategoryId: req.body.category_id,
+                  status:getStatus
+              },
+            { // Clause
+                  where: 
+                  {
+                      id: req.params.expense_id
+                  }
+              } 
+          ).then(() => { 
+                  res.redirect("/expenses");
+            });
+    }
+  }
+]
 
 // Display expense review form form on GET.
 exports.expense_review_get = async (req, res, next) => {
@@ -154,9 +168,9 @@ exports.expense_review_get = async (req, res, next) => {
 
   models.Expense.findById(
           req.params.expense_id
-  ).then(function(expense) {
+  ).then((expense) => {
          // renders a expense review form form
-         res.render('forms/expense_review_form', { title: 'Review Expense', categories:categories, departments, expense: expense, types:types, layout: 'layouts/detail'});
+         res.render('forms/expense_review_form', { title: 'Review Expense', categories, departments,  expense, types, layout: 'layouts/detail'});
     });
 };
 
@@ -176,7 +190,7 @@ exports.expense_review_post = function(req, res, next) {
               id: req.params.expense_id
           }
       } 
-   ).then(function() { 
+   ).then(() => { 
           res.redirect("/expenses");
     });
 };
@@ -190,9 +204,9 @@ exports.expense_list = async (req, res, next) => {
         attributes: ['id', 'first_name'],
       }
     ],
-  }).then(function(expenses) {
+  }).then((expenses) => {
   // renders an employee list page
-  res.render('pages/expense_list', { title: 'Expense List', expenses: expenses, layout: 'layouts/list'} );
+  res.render('pages/expense_list', { title: 'Expense List', expenses, layout: 'layouts/list'} );
   });
 };
 
@@ -221,11 +235,6 @@ exports.expense_detail = (req, res, next) => {
           }
   ).then((expense) => {
   // renders an inividual employee details page
-  res.render('pages/employee_detail', { title: 'Expense Details',   expense: expense, moment: moment, layout: 'layouts/detail'} );
+  res.render('pages/employee_detail', { title: 'Expense Details', expense, moment, layout: 'layouts/detail'} );
   });
 };
-
-[
-  {"id":2,"name":"Accounts and Finance","total_cost":"73100"},
-  {"id":1,"name":"Engineering","total_cost":"200"}
-]

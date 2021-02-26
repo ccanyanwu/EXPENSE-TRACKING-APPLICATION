@@ -15,16 +15,12 @@
               <% } 
             %>
             <form action="" method="post" class="w-50  mx-auto">
-              <!--label for="details"><strong class="fs">Details</strong></label-->
               <input class="iw" type="text" name="details" placeholder="expense detail">
-              <!--label for="amount"><strong class="fs">Amount</strong></label-->
               <input class="iw" type="number" name="amount" placeholder="amount e.g 2000">
-              <!--label for="employee"><strong class="fs">Employee Name</strong></label-->
               <select class="iw" name = "employee_id" class="form-control">
                 <option class="text-capitalize"  value="<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></option>
                 <br/>
               </select>
-              <!--label for="department_id"><strong class="fs">Department</strong></label-->
               <select class="iw" name = "department_id" class="form-control">
                 <% departments.forEach((department) => { %>
                   <% if(department.id == employee.DepartmentId){ %> 
@@ -87,6 +83,16 @@
     <div class="col-sm-12"> 
       <h2 class="display-4 mb-5">Update <%= expense.details %> Expense</h2>
         <div class="">
+          <!--error notice-->
+          <% if(typeof notice != 'undefined') { %>
+            <div class="alert alert-danger alert-dismissible w-75 mx-auto">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <% notice.forEach((error) => { %>
+                    <strong><%= error.msg %></strong> <br> 
+            <% }) %>
+            </div>
+            <% } 
+          %>
             <form action="/expense/<%= expense.id %>/update" method="post" class="w-50  mx-auto">
               <input class="iw" type="text" name="details" value="<%= expense.details %>" placeholder="expense details">
               <input class="iw" type="text" name="amount" value="<%= expense.amount %>" placeholder="amount e.g 1000">
@@ -148,4 +154,3 @@
 <% } else { %>
 
 <% } %>
-<!--Expense VIEW END HERE-->

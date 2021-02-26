@@ -96,7 +96,7 @@
             else{%> 
         <ol>
             <% topExpenses.forEach(topExpense => { %>   
-                    <li> <%= topExpense.details %> - &#8358;<%= topExpense.amount %></li>
+                    <li> <%= topExpense.details %> - &#8358;<%= topExpense.amount %> - <%= topExpense.Employee.first_name %> <%= topExpense.Employee.last_name %></li>
                 <%}) 
             %>
         </ol>

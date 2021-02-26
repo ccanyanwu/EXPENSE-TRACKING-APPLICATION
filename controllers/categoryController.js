@@ -4,6 +4,7 @@ var models = require('../models');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
 const urlencodedParser = bodyParser.urlencoded({extended:false});
+
 // Display category create form on GET.
 exports.category_create_get = (req, res, next) => {
         // renders a category form
@@ -48,20 +49,19 @@ exports.category_delete_post = (req, res, next) => {
 };
 
 // Display category update form on GET.
-exports.category_update_get = function(req, res, next) {
+exports.category_update_get = (req, res, next) => {
         
         models.Category.findById(
                 req.params.category_id
         ).then(function(category) {
                // renders a category form
-               res.render('forms/category_form', { title: 'Update Category', category: category, layout: 'layouts/detail'});
+               res.render('forms/category_form', { title: 'Update Category', category, layout: 'layouts/detail'});
                console.log("Category update get successful");
           });
 };
 
 // Handle category update on POST.
-exports.category_update_post = function(req, res, next) {
-        console.log("ID is " + req.params.category_id);
+exports.category_update_post = (req, res, next) => {
         models.Category.update(
         // Values to update
             {
@@ -73,15 +73,14 @@ exports.category_update_post = function(req, res, next) {
                     id: req.params.category_id
                 }
             } 
-         ).then(function() { 
+         ).then(() => { 
                 // If a category gets updated successfully,redirect to categories list
-                res.redirect("/categories");  
-                console.log("Post updated successfully");
+                res.redirect("/categories");
           });
 };
 
 // Display detail page for a specific category.
-exports.category_detail = async function(req, res, next) {
+exports.category_detail = async (req, res, next) => {
         // find a category by ID
         models.Category.findById(
                 req.params.category_id,
@@ -93,15 +92,15 @@ exports.category_detail = async function(req, res, next) {
                     }
                 ]
               }
-        ).then(function(category) {
+        ).then((category) => {
         // renders an inividual category details page
-        res.render('pages/category_detail', { title: 'Category Details', category:category, layout: 'layouts/detail'} );
+        res.render('pages/category_detail', { title: 'Category Details', category, layout: 'layouts/detail'} );
         });
         
 };
 
 // Display list of all categories.
-exports.category_list = function(req, res, next) {
+exports.category_list = (req, res, next) => {
         // controller logic to display all categories
         models.Category.findAll(
               {
@@ -112,9 +111,9 @@ exports.category_list = function(req, res, next) {
                     }
                 ]
               }
-        ).then(function(categories) {
+        ).then((categories) => {
         // renders a post list page
-        res.render('pages/category_list', { title: 'Category List', categories: categories, layout: 'layouts/list'} );
+        res.render('pages/category_list', { title: 'Category List', categories, layout: 'layouts/list'} );
         });
 };
 
