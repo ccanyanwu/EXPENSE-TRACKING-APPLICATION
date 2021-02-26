@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     details: {type: DataTypes.STRING},
     amount: {type: DataTypes.BIGINT},
+    DepartmentId: {type: DataTypes.INTEGER},
     EmployeeId: {type: DataTypes.INTEGER},
     TypeId: {type: DataTypes.INTEGER},
     CategoryId: {type: DataTypes.INTEGER},
@@ -22,6 +23,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Expense.associate = (models) => {
+    models.Expense.belongsTo(models.Department, {
+      onDelete: "CASCADE",
+      foreignKey: {
+        allowNull: false
+      }
+    });
+
     models.Expense.belongsTo(models.Employee, {
       onDelete: "CASCADE",
       foreignKey: {

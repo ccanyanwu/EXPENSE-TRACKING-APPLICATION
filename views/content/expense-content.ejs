@@ -15,23 +15,33 @@
               <% } 
             %>
             <form action="" method="post" class="w-50  mx-auto">
-              <label for="details"><strong class="fs">Details</strong></label>
+              <!--label for="details"><strong class="fs">Details</strong></label-->
               <input class="iw" type="text" name="details" placeholder="expense detail">
-              <label for="amount"><strong class="fs">Amount</strong></label>
-              <input class="iw" type="number" name="amount" placeholder="for fuel">
-              <label for="employee"><strong class="fs">Employee Name</strong></label>
+              <!--label for="amount"><strong class="fs">Amount</strong></label-->
+              <input class="iw" type="number" name="amount" placeholder="amount e.g 2000">
+              <!--label for="employee"><strong class="fs">Employee Name</strong></label-->
               <select class="iw" name = "employee_id" class="form-control">
                 <option class="text-capitalize"  value="<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></option>
                 <br/>
               </select>
-              <label for="type_id"><strong class="fs">Expense Type</strong></label>
+              <!--label for="department_id"><strong class="fs">Department</strong></label-->
+              <select class="iw" name = "department_id" class="form-control">
+                <% departments.forEach((department) => { %>
+                  <% if(department.id == employee.DepartmentId){ %> 
+                    <option  value="<%= department.id %>"><%= department.name %></option>
+                    <%}
+                  %>
+                <br/>
+                <% }); %>
+              </select>
+              <label for="type_id"><strong class="">Expense Type</strong></label>
               <select class="iw" name = "type_id" class="form-control">
                 <% types.forEach((type) => { %>
                 <option  value="<%= type.id %>"><%= type.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <label for="category_id"><strong class="fs">Category</strong></label>
+              <label for="category_id"><strong class="">Category</strong></label>
               <select class="iw" name = "category_id" class="form-control">
                 <% categories.forEach((category) => { %>
                 <option  value="<%= category.id %>"><%= category.name %></option>
@@ -48,25 +58,20 @@
 
         <div class="">
             <form action="/expense/<%= expense.id %>/review" method="post" class="w-50  mx-auto">
-              <label for="details"><strong class="fs">Details</strong></label>
               <input class="iw" type="text" name="details" value="<%= expense.details %>" disabled>
-              <label for="amount"><strong class="fs">Amount</strong></label>
               <input class="iw" type="text" name="amount" value="<%= expense.amount %>" disabled>
-              <label for="type_id"><strong class="fs">Expense Type</strong></label>
               <select class="iw" name = "type_id" class="form-control" disabled>
                 <% types.forEach((type) => { %>
                 <option  value="<%= type.id %>"><%= type.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <label for="category_id"><strong class="fs">Expense Category</strong></label>
               <select class="iw" name = "category_id" class="form-control" disabled>
                 <% categories.forEach((category) => { %>
                 <option  value="<%= category.id %>"><%= category.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <label for="status"><strong class="fs">Status</strong></label>
               <select class="iw" name = "status" class="form-control" >
                 <option  value="<%= expense.status %>"><%= expense.status %></option>
                 <br/>
@@ -83,18 +88,14 @@
       <h2 class="display-4 mb-5">Update <%= expense.details %> Expense</h2>
         <div class="">
             <form action="/expense/<%= expense.id %>/update" method="post" class="w-50  mx-auto">
-              <label for="details"><strong class="fs">Details</strong></label>
-              <input class="iw" type="text" name="details" value="<%= expense.details %>">
-              <label for="amount"><strong class="fs">Amount</strong></label>
-              <input class="iw" type="text" name="amount" value="<%= expense.amount %>">
-              <label for="type_id"><strong class="fs">Expense Type</strong></label>
+              <input class="iw" type="text" name="details" value="<%= expense.details %>" placeholder="expense details">
+              <input class="iw" type="text" name="amount" value="<%= expense.amount %>" placeholder="amount e.g 1000">
               <select class="iw" name = "type_id" class="form-control">
                 <% types.forEach((type) => { %>
                 <option  value="<%= type.id %>"><%= type.name %></option>
                 <br/>
                 <% }); %>
               </select>
-              <label for="category_id"><strong class="fs">Expense Category</strong></label>
               <select class="iw" name = "category_id" class="form-control">
                 <% categories.forEach((category) => { %>
                 <option  value="<%= category.id %>"><%= category.name %></option>
@@ -114,7 +115,8 @@
              <p>Amount  - <strong>&#8358;<%= expense.amount %></strong></p>
              <p>Status - <strong><%= expense.status %></strong></p>
              <p><%= expense.Employee.first_name%>'s Role - <strong><span class="text-uppercase"><%= expense.Employee.role %></strong></span> </p>
-             <p>Type - <strong><%= expense.Type.name %><strong></p>
+             <p>Department - <strong><%= expense.Department.name %></strong></p>
+             <p>Type - <strong><%= expense.Type.name %></strong></p>
              <p>Category - <strong><%= expense.Category.name %></strong></p>
              <p>
                <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/update" class="badge badge-success ">Edit</a>

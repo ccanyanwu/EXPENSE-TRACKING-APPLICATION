@@ -119,7 +119,8 @@ exports.employee_detail = async function(req, res, next) {
           req.params.employee_id, {
           include: [
             {
-              model: models.Expense
+              model: models.Expense,
+              attributes: ['id', 'details', 'DepartmentId']
             },
             {
               model: models.Department,
@@ -180,6 +181,31 @@ exports.index = async function(req, res) {
     }
   );
 
+   //placing expenses under departments
+   let expenseDepts = await models.Department.findAll({
+    include: [
+      {
+        model: models.Expense,
+        attributes: ['details', 'amount']
+      }
+    ],
+    group: ['Department.id','Expenses.id']
+    }
+  );
+
+  //total amount spent per department
+  let deptExpense = await models.Department.findAll({
+    attributes : ['id', 'name', [models.sequelize.fn('SUM', models.sequelize.col('amount')), 'id']],
+    include: [
+      {
+        model: models.Expense,
+        attributes: []
+      }
+    ],
+    group: ['Department.id'],
+    }
+  )
+
   //placing expenses under type
   let expenseTypes = await models.Type.findAll({
     include: [
@@ -208,24 +234,9 @@ exports.index = async function(req, res) {
   ).then(function(typeCount)
   
   {
-    res.render('pages/index', {
-        title: 'DASHBOARD',
-        amountSum:amountSum,
-        topExpenses:topExpenses,
-        employeeCount: employeeCount,
-        expenseCats:expenseCats, 
-        expenseCount: expenseCount,
-        expenseTypes:expenseTypes,
-        categoryCount: categoryCount,
-        latest:latest,
-        moment:moment,
-        typeCount: typeCount,
-        layout: 'layouts/main'
-        
-    });
+    res.render('pages/index', { title: 'DASHBOARD', amountSum, topExpenses, deptExpense, employeeCount,expenseCats, expenseCount, expenseTypes, categoryCount, expenseDepts, latest, moment, typeCount, layout: 'layouts/main'});
   });
   });
   });
-  });
-  console.log('I AM THE ONE OOO'+ latest); 
+   }); 
 }

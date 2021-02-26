@@ -11,10 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   
-//create association between department and employee
-  // a department can have more than 1 employee
+//create association between department, expens and employee
+  // a department can have more than 1 employee and expense
   Department.associate = (models) => {
     models.Department.hasMany(models.Employee);
+    models.Department.hasMany(models.Expense);
+
   };
 
   return Department;

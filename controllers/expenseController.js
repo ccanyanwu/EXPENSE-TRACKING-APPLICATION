@@ -10,7 +10,8 @@ const urlencodedParser = bodyParser.urlencoded({extended:false});
 
 // Display expense create form on GET.
 exports.expense_create_get =  async (req, res, next) => {
-        // connect with employee, type and categories
+        // connect with employee,department, type and categories
+        const departments = await models.Department.findAll();
         const types = await models.Type.findAll();
         const categories = await models.Category.findAll();
 
@@ -19,21 +20,17 @@ exports.expense_create_get =  async (req, res, next) => {
           include: [
             {
               model: models.Expense
-            },
-            {
-              model: models.Department,
-              attributes: ['id', 'name']
             }
           ]
           }
   ).then(function(employee) {
     // renders a personalized expense form
-    res.render('forms/expense_form', { title: 'Create Expense', categories:categories, employee: employee, types:types, layout: 'layouts/detail'} );
+    res.render('forms/expense_form', { title: 'Create Expense', categories:categories, departments:departments, employee: employee, types:types, layout: 'layouts/detail'} );
     
     });
         ;
 };
-//isMobilePhone()
+
 // Handle expense create on POST.
 exports.expense_create_post =[ urlencodedParser,
   [
@@ -43,7 +40,8 @@ exports.expense_create_post =[ urlencodedParser,
   async (req, res) => {
     const errors = validationResult(req);
 
-    // connect with employee, type and categories
+    // connect with employee, department, type and categories
+    const departments = await models.Department.findAll();
     const types = await models.Type.findAll();
     const categories = await models.Category.findAll();
 
@@ -52,18 +50,18 @@ exports.expense_create_post =[ urlencodedParser,
       include: [
         {
           model: models.Expense
-        },
+        }/*,
         {
           model: models.Department,
           attributes: ['id', 'name']
-        }
+        }*/
       ]
       }
 )
     if(!errors.isEmpty()){
       //return res.status(422).jsonp(errors.array());
       const notice = errors.array();
-      res.render('forms/expense_form', { title: 'Create Expense', categories:categories, employee: employee, notice, types:types, layout: 'layouts/detail'});
+      res.render('forms/expense_form', { title: 'Create Expense', categories:categories, departments, employee: employee, notice, types:types, layout: 'layouts/detail'});
     } else {
       let employee_id = req.body.employee_id;
       
@@ -71,13 +69,14 @@ exports.expense_create_post =[ urlencodedParser,
     let getAmount = req.body.amount,
         getStatus = '';
   
-        if(getAmount < 1000){getStatus = 'Approved';}
-        else{getStatus = 'Pending'}
+        if(getAmount < 1000){getStatus = 'approved';}
+        else{getStatus = 'pending'}
       
        models.Expense.create({
              details: req.body.details,
              amount: req.body.amount,
              EmployeeId: req.body.employee_id,
+             DepartmentId: req.body.department_id,
              TypeId: req.body.type_id,
              CategoryId: req.body.category_id,
              status: getStatus,
@@ -105,6 +104,7 @@ exports.expense_delete_post = function(req, res, next) {
 
 // Display expense update form on GET.
 exports.expense_update_get = async (req, res, next) => {
+  const departments = await models.Department.findAll();
   const types = await models.Type.findAll();
   const categories = await models.Category.findAll();
 
@@ -112,24 +112,25 @@ exports.expense_update_get = async (req, res, next) => {
           req.params.expense_id
   ).then(function(expense) {
          // renders an  update form
-         res.render('forms/expense_form', { title: 'Update Expense', categories:categories, expense: expense, types:types, layout: 'layouts/detail'});
+         res.render('forms/expense_form', { title: 'Update Expense', categories:categories, departments, expense: expense, types:types, layout: 'layouts/detail'});
     });
 };
 
 // Handle EXPENSE update on POST.
 exports.expense_update_post = function(req, res, next) {
-  // POST logic to update an expense here
+  
   //logic for expense status
   let getAmount = req.body.amount,
       getStatus = '';
 
-      if(getAmount < 1000){getStatus = 'Approved';}
-      else{getStatus = 'Pending'}
+      if(getAmount < 1000){getStatus = 'approved';}
+      else{getStatus = 'pending'}
   models.Expense.update(
   // Values to update
       {
           details: req.body.details,
           amount: getAmount,
+          DepartmentId: req.body.department_id,
           TypeId: req.body.type_id,
           CategoryId: req.body.category_id,
           status:getStatus
@@ -147,6 +148,7 @@ exports.expense_update_post = function(req, res, next) {
 
 // Display expense review form form on GET.
 exports.expense_review_get = async (req, res, next) => {
+  const departments = await models.Department.findAll();
   const types = await models.Type.findAll();
   const categories = await models.Category.findAll();
 
@@ -154,7 +156,7 @@ exports.expense_review_get = async (req, res, next) => {
           req.params.expense_id
   ).then(function(expense) {
          // renders a expense review form form
-         res.render('forms/expense_review_form', { title: 'Review Expense', categories:categories, expense: expense, types:types, layout: 'layouts/detail'});
+         res.render('forms/expense_review_form', { title: 'Review Expense', categories:categories, departments, expense: expense, types:types, layout: 'layouts/detail'});
     });
 };
 
@@ -208,6 +210,10 @@ exports.expense_detail = (req, res, next) => {
               attributes: ['id', 'name']
             },
             {
+              model: models.Department,
+              attributes: ['id', 'name']
+            },
+            {
               model: models.Type,
               attributes: ['id', 'name']
             }
@@ -218,3 +224,8 @@ exports.expense_detail = (req, res, next) => {
   res.render('pages/employee_detail', { title: 'Expense Details',   expense: expense, moment: moment, layout: 'layouts/detail'} );
   });
 };
+
+[
+  {"id":2,"name":"Accounts and Finance","total_cost":"73100"},
+  {"id":1,"name":"Engineering","total_cost":"200"}
+]

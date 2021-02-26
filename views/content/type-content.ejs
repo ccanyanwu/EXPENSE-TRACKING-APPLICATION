@@ -15,7 +15,6 @@
                 <% } 
               %>
             <form action="" method="post" class="w-50  mx-auto">
-              <label for="name"><strong class="fs">Type Name</strong></label>
               <input class="iw" type="text" name="name" placeholder="Type Name">
               <input class="ib" type="submit" value="Create Type">
             </form>
@@ -26,8 +25,7 @@
       <h2 class="display-4 mb-5">Update <%= type.name %> Category</h2>
         <div class="">
             <form action="/type/<%= type.id %>/update" method="post" class="w-50  mx-auto">
-                <label for="name"><strong class="fs">Type Name</strong></label>
-              <input class="iw" type="text" name="name" value="<%= type.name %>">
+              <input class="iw" type="text" name="name" value="<%= type.name %>" placeholder="type of expense">
               <input class="ib" type="submit" value="Update Type">
             </form>
         </div>
