@@ -39,7 +39,7 @@
     </div>
     <!--Expenses Based on Category-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb fs">Expenses Listed by Category</p>
+        <p class="display-4 fwb fs bg-dark p-2 w-50 text-white">Expenses Listed by Category</p>
         <% if(expenseCats.length == 0){%>
             <p>No expense has been added based on category yet</p>
            <%}
@@ -64,7 +64,7 @@
 
      <!--Expenses Listed by Department-->
      <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb fs">Expenses Listed by Department</p>
+        <p class="display-4 fwb fs bg-dark p-2 w-50 text-white">Expenses Listed by Department</p>
         <% if(expenseDepts.length == 0){%>
             <p>No expense has been added under any Department yet</p>
            <%}
@@ -89,7 +89,7 @@
    
     <!--TOP 5 EXPENSES-->
     <div class="col-sm-12 col-md-10 mx-4 my-3 p-2">
-        <p class="fwb display-4 fs">Top 5 expenses</p>
+        <p class="fwb display-4 fs bg-dark p-2 w-25 text-white">Top 5 expenses</p>
         <% if(topExpenses.length == 0){%> 
                 <p>There are no expenses in the system to be ranked yet</p>
             <%}
@@ -105,7 +105,7 @@
 
     <!--Total Expense made by each Department-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb fs">Total Amount Spent By Each Department</p>
+        <p class="display-4 fwb fs bg-dark p-2 w-75 text-white">Total Amount Spent By Each Department</p>
         <% if(deptExpense.length == 0){%>
             <p>No Department has spent any amount yet</p>
            <%}
