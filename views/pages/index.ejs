@@ -39,16 +39,16 @@
     </div>
     <!--Expenses Based on Category-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb">Expenses Listed by Category</p>
+        <p class="display-4 fwb fs">Expenses Listed by Category</p>
         <% if(expenseCats.length == 0){%>
             <p>No expense has been added based on category yet</p>
            <%}
            else {%> 
         
         <% expenseCats.forEach(expenseCat => { %> 
-            <p class="fwb"><%= expenseCat.name %></p>
+            <p class="fwb text-uppercase"><%= expenseCat.name %></p>
             <%if(expenseCat.Expenses.length == 0){%> 
-                <p>There are no expenses under this category yet</p>
+                <p>There are no expenses in the <%= expenseCat.name %>  category yet</p>
             <%}else{%> 
                 <ol>
                 <% expenseCat.Expenses.forEach(item => { %> 
@@ -64,16 +64,16 @@
 
      <!--Expenses Listed by Department-->
      <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb">Expenses Listed by Department</p>
+        <p class="display-4 fwb fs">Expenses Listed by Department</p>
         <% if(expenseDepts.length == 0){%>
             <p>No expense has been added under any Department yet</p>
            <%}
            else {%> 
         
         <% expenseDepts.forEach(expenseDept => { %> 
-            <p class="fwb"><%= expenseDept.name %></p>
+            <p class="fwb text-uppercase"><%= expenseDept.name %></p>
             <%if(expenseDept.Expenses.length == 0){%> 
-                <p>No expense has been added by employees in this Department yet</p>
+                <p>No expense has been added by employees in the <%= expenseDept.name %> department yet</p>
             <%}else{%> 
                 <ol>
                 <% expenseDept.Expenses.forEach(item => { %> 
@@ -86,34 +86,10 @@
         %> 
         <%} %>
     </div>
-
-    <!--Expenses Based on Type--
-    <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb">Type Based Expenses</p>
-        <% if(expenseTypes.length === 0){%> 
-                <p>No expense has been added based on type yet</p>
-            <%}
-            else{%> 
-        <% expenseTypes.forEach(expenseType => { %> 
-            <p class="fwb"><%= expenseType.name %></p>
-            <%if(expenseType.Expenses.length == 0){%> 
-                <p>There are no <%= expenseType.name %> expenses under this type yet</p>
-            <%}else{%> 
-                <ol>
-                <% expenseType.Expenses.forEach(item => { %> 
-                    <li><%= item.details %></li>
-                <%}) %>
-                </ol>
-            <%}
-            %>
-        <% })
-        %> 
-        <%} %>
-    </div> -->
    
     <!--TOP 5 EXPENSES-->
     <div class="col-sm-12 col-md-10 mx-4 my-3 p-2">
-        <p class="fwb display-4">Top 5 expenses</p>
+        <p class="fwb display-4 fs">Top 5 expenses</p>
         <% if(topExpenses.length == 0){%> 
                 <p>There are no expenses in the system to be ranked yet</p>
             <%}
@@ -129,18 +105,17 @@
 
     <!--Total Expense made by each Department-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb">Total Amount Spent By Each Department</p>
+        <p class="display-4 fwb fs">Total Amount Spent By Each Department</p>
         <% if(deptExpense.length == 0){%>
-            <p>No Department has spent any amount yet yet</p>
+            <p>No Department has spent any amount yet</p>
            <%}
            else {%> 
                     <ol> 
                         <% deptExpense.forEach(item => { %>  
-                                <% if(item.id == null) { %> <li><%= item.name %> - &#8358;0</li> <%} else { %> 
+                            <% if(item.id !== null) { %> 
                                     <li><%= item.name %> - &#8358;<%= item.id %></li>
-                                    <%}
-                                
-                                %>
+                                <%}
+                            %>
                         <% })
                         %> 
                     </ol>
