@@ -1,7 +1,3 @@
-const Sequelize = require('sequelize');
-
-//access control
-const AccessControl = require('accesscontrol');
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Employee = sequelize.define('Employee', {
@@ -9,15 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     last_name: {type: DataTypes.STRING},
     username: {type: DataTypes.STRING},
     email: {type: DataTypes.STRING},
-    password: {
-    type: DataTypes.STRING/*,
-    validate: {
-        len: { 
-            args: [7, 42],
-            msg: "The password length should be between 7 and 18 characters."
-        }
-    },
-  */},
+    password: { type: DataTypes.STRING},
     mobile:{type: DataTypes.BIGINT},
     role: { 
       type: DataTypes.STRING,
@@ -29,8 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     DepartmentId: {type: DataTypes.INTEGER}
   });
 
-   //create association between author and post
-  // an author can has many posts
+   //create association between employee, department and expense
   Employee.associate = (models) => {
     models.Employee.belongsTo(models.Department, {
       onDelete: "CASCADE",

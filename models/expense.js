@@ -1,5 +1,3 @@
-const Sequelize = require('sequelize');
-
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Expense = sequelize.define('Expense', {
