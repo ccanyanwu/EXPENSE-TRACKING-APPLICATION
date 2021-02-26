@@ -15,7 +15,6 @@
                 <% } 
               %>
             <form action="" method="post" class="w-50  mx-auto">
-              <label for="name"><strong class="fs">Category Name</strong></label>
               <input class="iw" type="text" name="name" placeholder="Category Name">
               <input class="ib" type="submit" value="Create Category">
             </form>
@@ -26,8 +25,7 @@
       <h2 class="display-4 mb-5">Update <%= category.name %> Category</h2>
         <div class="">
             <form action="/category/<%= category.id %>/update" method="post" class="w-50  mx-auto">
-                <label for="name"><strong class="fs">Category Name</strong></label>
-              <input class="iw" type="text" name="name" value="<%= category.name %>">
+              <input class="iw" type="text" name="name" value="<%= category.name %>" placeholder="category name">
               <input class="ib" type="submit" value="Update Category">
             </form>
         </div>

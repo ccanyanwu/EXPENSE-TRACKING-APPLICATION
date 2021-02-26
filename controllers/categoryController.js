@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
 const urlencodedParser = bodyParser.urlencoded({extended:false});
 // Display category create form on GET.
-exports.category_create_get = function(req, res, next) {
+exports.category_create_get = (req, res, next) => {
         // renders a category form
         res.render('forms/category_form', { title: 'Create Category',  layout: 'layouts/detail'});
 };
@@ -34,7 +34,7 @@ exports.category_create_post = [ urlencodedParser,
 ] 
 
 // Handle category delete on POST.
-exports.category_delete_post = function(req, res, next) {
+exports.category_delete_post = (req, res, next) => {
    
         models.Category.destroy({
             // find the category_id to delete from database
@@ -44,7 +44,6 @@ exports.category_delete_post = function(req, res, next) {
           }).then(function() {
            // If an post gets deleted successfully, redirect to categories list
             res.redirect('/categories');
-            console.log("Category deleted successfully");
           });
 };
 

@@ -14,21 +14,21 @@
                 </div>
             <% } %>
             <form action="" method="post"  class="w-50  mx-auto">
-              <label for="first_name"><strong class="fs">First Name</strong></label>
+              <!--label for="first_name"><strong class="fs">First Name</strong></label-->
               <input class="iw" type="text" name="first_name" placeholder="First Name">
-              <label for="last_name"><strong class="fs">Last Name</strong></label>
+              <!--label for="last_name"><strong class="fs">Last Name</strong></label-->
               <input class="iw" type="text" name="last_name" placeholder="Last Name">
-              <label for="username"><strong class="fs">Username</strong></label>
-              <input class="iw" type="text" name="username" placeholder="manifest">
-              <label for="email"><strong class="fs">Email</strong></label>
-              <input class="iw" type="email" name="email" placeholder="hello@manifest.com">
-              <label for="password"><strong class="fs">Password</strong></label>
-              <input class="iw" type="password" name="password" placeholder="m@n1fe$t">
-              <label for="mobile"><strong class="fs">Mobile</strong></label>
-              <input class="iw" type="number" name="mobile" placeholder="08012345678">
-              <label for="role"><strong class="fs">Role</strong></label>
-              <input class="iw" type="text" name="role" placeholder="hello@manifest.com">
-              <label for="department"><strong class="fs">Department</strong></label>
+              <!--label for="username"><strong class="fs">Username</strong></label-->
+              <input class="iw" type="text" name="username" placeholder="username">
+              <!--label for="email"><strong class="fs">Email</strong></label-->
+              <input class="iw" type="email" name="email" placeholder="email">
+              <!--label for="password"><strong class="fs">Password</strong></label-->
+              <input class="iw" type="password" name="password" placeholder="password">
+              <!--label for="mobile"><strong class="fs">Mobile</strong></label-->
+              <input class="iw" type="number" name="mobile" placeholder="phone number">
+              <!--label for="role"><strong class="fs">Role</strong></label-->
+              <input class="iw" type="text" name="role" placeholder="role e.g manager">
+              <label for="department"><strong class="">Department</strong></label>
                 <select class="iw" name = "department_id" class="form-control">
                     <% departments.forEach((department) => { %>
                     <option class="iw" value="<%= department.id %>"><%= department.name %></option>
@@ -54,12 +54,12 @@
                 </div>
             <% } %>
             <form action="/employee/<%= employee.id %>/update" method="post" class="w-50  mx-auto">
-                <label for="username"><strong class="fs">USERNAME</strong></label>
-                <input class="iw" type="text" name="username" value="<%= employee.username %>">
-                <label for="role"><strong class="fs">ROLE</strong></label>
-                <input class="iw" type="text" name="role" value="<%= employee.role %>">
-                <label for="mobile"><strong class="fs">MOBILE</strong></label>
-                <input class="iw" type="text" name="mobile" value="0<%= employee.mobile %>">
+                <!--label for="username"><strong class="fs">USERNAME</strong></label-->
+                <input class="iw" type="text" name="username" value="<%= employee.username %>" placeholder="username">
+                <!--label for="role"><strong class="fs">ROLE</strong></label-->
+                <input class="iw" type="text" name="role" value="<%= employee.role %>" placeholder="role">
+                <!--label for="mobile"><strong class="fs">MOBILE</strong></label-->
+                <input class="iw" type="text" name="mobile" value="0<%= employee.mobile %>" placeholder="phone number">
                 <input type="submit" class="ib" value="Update employee">
             </form>
         </div>
@@ -87,7 +87,7 @@
                         <% employee.Expenses.forEach(function(expense) { %>
                             <div class="row">
                                 <li class="col-9">
-                                    <a href="/employee/:employee_id/expense/<%= expense.id %>"><%= expense.details %></a></h4>
+                                    <a href="/employee/<%= employee.id %>/expense/<%= expense.id %>"><%= expense.details %></a></h4>
                                 </li>
                                 <div class="col-3 mr-auto">
                                     <a href="/employee/<%= employee.id %>/expense/<%= expense.id %>/update" class="badge badge-success">Edit</a>  

@@ -39,7 +39,7 @@
     </div>
     <!--Expenses Based on Category-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb">Expenses Based on Category</p>
+        <p class="display-4 fwb">Expenses Listed by Category</p>
         <% if(expenseCats.length == 0){%>
             <p>No expense has been added based on category yet</p>
            <%}
@@ -62,7 +62,32 @@
         <%} %>
     </div>
 
-    <!--Expenses Based on Type-->
+     <!--Expenses Listed by Department-->
+     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
+        <p class="display-4 fwb">Expenses Listed by Department</p>
+        <% if(expenseDepts.length == 0){%>
+            <p>No expense has been added under any Department yet</p>
+           <%}
+           else {%> 
+        
+        <% expenseDepts.forEach(expenseDept => { %> 
+            <p class="fwb"><%= expenseDept.name %></p>
+            <%if(expenseDept.Expenses.length == 0){%> 
+                <p>No expense has been added by employees in this Department yet</p>
+            <%}else{%> 
+                <ol>
+                <% expenseDept.Expenses.forEach(item => { %> 
+                    <li><%= item.details %></li>
+                <%}) %>
+                </ol>
+            <%}
+            %>
+        <% })
+        %> 
+        <%} %>
+    </div>
+
+    <!--Expenses Based on Type--
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
         <p class="display-4 fwb">Type Based Expenses</p>
         <% if(expenseTypes.length === 0){%> 
@@ -84,7 +109,8 @@
         <% })
         %> 
         <%} %>
-    </div>
+    </div> -->
+   
     <!--TOP 5 EXPENSES-->
     <div class="col-sm-12 col-md-10 mx-4 my-3 p-2">
         <p class="fwb display-4">Top 5 expenses</p>
@@ -98,6 +124,28 @@
                 <%}) 
             %>
         </ol>
+        <%} %>
+    </div>
+
+    <!--Total Expense made by each Department-->
+    <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
+        <p class="display-4 fwb">Total Amount Spent By Each Department</p>
+        <% if(deptExpense.length == 0){%>
+            <p>No Department has spent any amount yet yet</p>
+           <%}
+           else {%> 
+                    <ol> 
+                        <% deptExpense.forEach(item => { %>  
+                                <% if(item.id == null) { %> <li><%= item.name %> - &#8358;0</li> <%} else { %> 
+                                    <li><%= item.name %> - &#8358;<%= item.id %></li>
+                                    <%}
+                                
+                                %>
+                        <% })
+                        %> 
+                    </ol>
+        
+        
         <%} %>
     </div>
 </div>
