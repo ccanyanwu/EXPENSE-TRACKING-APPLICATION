@@ -23,7 +23,11 @@ exports.category_create_post = [ urlencodedParser,
     if(!errors.isEmpty()){
       //return res.status(422).jsonp(errors.array());
       const notice = errors.array();
-      res.render('forms/category_form', { title: 'Create Category', notice, layout: 'layouts/detail'});
+      res.render('forms/category_form', { 
+        title: 'Create Category',
+        name: req.body.name, 
+        notice, 
+        layout: 'layouts/detail'});
     }else{
       models.Category.create({
         name: req.body.name 

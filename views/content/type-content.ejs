@@ -15,7 +15,7 @@
                 <% } 
               %>
             <form action="" method="post" class="w-50  mx-auto">
-              <input class="iw" type="text" name="name" placeholder="Type Name">
+              <input class="iw" type="text" name="name" placeholder="Type Name" value="<%= locals.name ?  name : "" %>">
               <input class="ib" type="submit" value="Create Type">
             </form>
         </div>

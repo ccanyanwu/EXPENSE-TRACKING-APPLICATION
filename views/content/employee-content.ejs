@@ -14,13 +14,13 @@
                 </div>
             <% } %>
             <form action="" method="post"  class="w-50  mx-auto">
-              <input class="iw" type="text" name="first_name" placeholder="First Name" autofocus>
-              <input class="iw" type="text" name="last_name" placeholder="Last Name">
-              <input class="iw" type="text" name="username" placeholder="username">
-              <input class="iw" type="email" name="email" placeholder="email">
-              <input class="iw" type="password" name="password" placeholder="password">
-              <input class="iw" type="number" name="mobile" placeholder="phone number">
-              <input class="iw" type="text" name="role" placeholder="role e.g manager">
+              <input class="iw" type="text" name="first_name" placeholder="First Name"       value="<%= locals.first_name ?  first_name : "" %>" autofocus>
+              <input class="iw" type="text" name="last_name" placeholder="Last Name" value="<%= locals.last_name ?  last_name : "" %>" > 
+              <input class="iw" type="text" name="username" placeholder="username" value="<%= locals.username ?  username : "" %>">
+              <input class="iw" type="email" name="email" placeholder="email" value="<%= locals.email ?  email : "" %>">
+              <input class="iw" type="password" name="password" placeholder="password" value="<%= locals.password ?  password : "" %>" >
+              <input class="iw" type="number" name="mobile" placeholder="phone number" value="<%= locals.mobile ?  mobile : "" %>">
+              <input class="iw" type="text" name="role" placeholder="role e.g manager" value="<%= locals.role ?  role : "" %>">
               <label for="department"><strong class="">Department</strong></label>
                 <select class="iw" name = "department_id" class="form-control">
                     <% departments.forEach((department) => { %>

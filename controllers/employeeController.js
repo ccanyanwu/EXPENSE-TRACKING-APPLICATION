@@ -31,10 +31,20 @@ exports.employee_create_post =  [ urlencodedParser,
 
     // find all departments associated with employee
     const departments = await models.Department.findAll();
-
+    
     if(!errors.isEmpty()){
        const notice = errors.array();
-       res.render('forms/employee_form', { title: 'Create Employee', departments, notice, layout: 'layouts/detail'});
+       res.render('forms/employee_form', {
+          title: 'Create Employee', 
+          departments, 
+          first_name : req.body.first_name, notice, 
+          last_name: req.body.last_name,
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+          mobile: req.body.mobile,
+          role: req.body.role,
+          layout: 'layouts/detail'});
   } else {
     models.Employee.create({
             first_name: req.body.first_name,
