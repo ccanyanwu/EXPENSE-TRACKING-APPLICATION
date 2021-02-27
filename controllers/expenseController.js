@@ -56,7 +56,16 @@ exports.expense_create_post =[ urlencodedParser,
 )
     if(!errors.isEmpty()){
       const notice = errors.array();
-      res.render('forms/expense_form', { title: 'Create Expense', categories, departments, employee, notice, types, layout: 'layouts/detail'});
+      res.render('forms/expense_form', { 
+        title: 'Create Expense', 
+        amount: req.body.amount,
+        categories, 
+        departments,
+        details: req.body.details, 
+        employee, 
+        notice, 
+        types, 
+        layout: 'layouts/detail'});
     } else {
       let employee_id = req.body.employee_id;
       

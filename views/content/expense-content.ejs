@@ -15,13 +15,13 @@
               <% } 
             %>
             <form action="" method="post" class="w-50  mx-auto">
-              <input class="iw" type="text" name="details" placeholder="expense detail">
-              <input class="iw" type="number" name="amount" placeholder="amount e.g 2000">
-              <select class="iw" name = "employee_id" class="form-control">
-                <option class="text-capitalize"  value="<%= employee.id %>"><%= employee.first_name %> <%= employee.last_name %></option>
+              <input class="iw" type="text" name="details" placeholder="expense detail" value="<%= locals.details ?  details : "" %>">
+              <input class="iw" type="number" name="amount" placeholder="amount e.g 2000" value="<%= locals.amount ?  amount : "" %>">
+              <select class="iw" name = "employee_id" class="form-control" disabled>
+                <option class="text-capitalize"  value="<%= employee.id %>" ><%= employee.first_name %> <%= employee.last_name %></option>
                 <br/>
               </select>
-              <select class="iw" name = "department_id" class="form-control">
+              <select class="iw" name = "department_id" class="form-control" disabled>
                 <% departments.forEach((department) => { %>
                   <% if(department.id == employee.DepartmentId){ %> 
                     <option  value="<%= department.id %>"><%= department.name %></option>

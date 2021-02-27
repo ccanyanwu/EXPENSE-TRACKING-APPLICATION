@@ -21,7 +21,11 @@ exports.type_create_post = [ urlencodedParser,
     if(!errors.isEmpty()){
       //return res.status(422).jsonp(errors.array());
       const notice = errors.array();
-      res.render('forms/type_form', { title: 'Create Type', notice, layout: 'layouts/detail'});
+      res.render('forms/type_form', { 
+        title: 'Create Type', 
+        name: req.body.name,
+        notice, 
+        layout: 'layouts/detail'});
     }else{
     // If a type gets created successfully, redirect to categories list
      models.Type.create({
