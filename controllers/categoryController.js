@@ -90,10 +90,19 @@ exports.category_detail = async (req, res, next) => {
                 req.params.category_id,
                 {
                     include: [
-                     {
-                          model: models.Expense,
-                          attributes: ['id', 'details', 'status','amount']
-                    }
+                      {
+                        model: models.Expense,
+                        as: 'expenses',
+                        required: false,
+                        // Pass in the Expense attributes that you want to retrieve
+                        attributes: ['id', 'details', 'status', 'amount'],
+                        through: {
+                          // This block of code allows you to retrieve the properties of the join table ExpenseCategory
+                          model: models.ExpenseCategory,
+                          as: 'ExpenseCategory',
+                          attributes: ['expense_id', 'category_id'],
+                      }
+                  }
                 ]
               }
         ).then((category) => {
@@ -111,7 +120,8 @@ exports.category_list = (req, res, next) => {
                     include: [
                      {
                           model: models.Expense,
-                          attributes: ['id', 'details']
+                          attributes: ['id', 'details'],
+                          as: "expenses"
                     }
                 ]
               }

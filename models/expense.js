@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     DepartmentId: {type: DataTypes.INTEGER},
     EmployeeId: {type: DataTypes.INTEGER},
     TypeId: {type: DataTypes.INTEGER},
-    CategoryId: {type: DataTypes.INTEGER},
     status: {type: DataTypes.STRING},
   });
 
@@ -42,13 +41,12 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
 
-    models.Expense.belongsTo(models.Category, {
-      onDelete: "CASCADE",
-      foreignKey: {
-        allowNull: false
-      }
+    models.Expense.belongsToMany(models.Category,{ 
+      as: 'categories', 
+      through: 'ExpenseCategory',
+      foreignKey: 'expense_id'
     });
   };
-
+  
   return Expense;
 };

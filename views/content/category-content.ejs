@@ -39,7 +39,7 @@
              <a href="/category/<%= category.id %>/update" class="badge badge-success">Edit  Category</a>  <a href="/category/<%= category.id %>/delete" class="badge badge-danger">Delete Category</a>
         </div>
         
-        <% if(category.Expenses.length == 0) { %>
+        <% if(category.expenses.length == 0) { %>
             <div class="alert alert-info mt-5 w-50">
                 <strong>Info:</strong> You don't have any expense under this category yet.
             </div>
@@ -47,17 +47,13 @@
             <h2 class="fwb">All Expenses in this Category</h2>
             <div class="">
                 <ol>
-                <% category.Expenses.forEach(function(expense) { %>
+                <% category.expenses.forEach(function(expense) { %>
                         <div class="row">
-                            <li class="col-9">
+                            <li class="col-12">
                                 <h4><%= expense.details %></h4>
                                 <p>Amount - &#8358;<%= expense.amount %></p>
                                 <p>Status - <%= expense.status %></p>
                             </li>
-                            <div class="col-3 mr-auto">
-                             <a href="/category/<%= category.id %>/update" class="badge badge-success">Edit</a>
-                             <a href="/category/<%= category.id %>/delete" class="badge badge-danger">Delete</a>
-                            </div>
                         </div>
                     <br/>
                 <% }); %>

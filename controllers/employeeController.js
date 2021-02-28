@@ -157,8 +157,8 @@ exports.employee_detail = async (req, res, next) => {
 
 // This is the Manifest expense tracker  homepage.
 exports.index = async (req, res) => {
-  //sum of all the amount in expense model
-  let amountSum = await models.Expense.sum('amount');
+   //sum of all the amount in expense model
+   let amountSum = await models.Expense.sum('amount');
 
   //the most recent expense based on time
   let latest = await models.Expense.findOne({
@@ -179,7 +179,8 @@ exports.index = async (req, res) => {
     include: [
       {
         model: models.Category,
-        attributes: ['id' ,'name']
+        attributes: ['id' ,'name'],
+        as: "categories"
       },
       {
         model: models.Employee,
@@ -198,10 +199,17 @@ exports.index = async (req, res) => {
     include: [
       {
         model: models.Expense,
-        attributes: ['details']
+        as: "expenses",
+        attributes: ['details'],
+        through: {
+          // This block of code allows you to retrieve the properties of the join table ExpenseCategory
+          model: models.ExpenseCategory,
+          as: 'ExpenseCategory',
+          attributes: ['expense_id', 'category_id'],
+        }
       }
     ],
-    group: ['Category.id','Expenses.id']
+    group: ['Category.id', 'expenses.id', 'expenses.ExpenseCategory.createdAt', 'expenses.ExpenseCategory.updatedAt', 'expenses.ExpenseCategory.category_id', 'expenses.ExpenseCategory.expense_id']
     }
   );
 
@@ -230,17 +238,17 @@ exports.index = async (req, res) => {
     }
   )
 
-  //placing expenses under type
-  let expenseTypes = await models.Type.findAll({
-    include: [
-      {
-        model: models.Expense,
-        attributes: ['details']
-      }
-    ],
-    group: ['Type.id','Expenses.id']
-    }
-  );
+  // //placing expenses under type
+  // let expenseTypes = await models.Type.findAll({
+  //   include: [
+  //     {
+  //       model: models.Expense,
+  //       attributes: ['details']
+  //     }
+  //   ],
+  //   group: ['Type.id','Expenses.id']
+  //   }
+  // );
   
   // find the count of Employees,expenses,categories and types in database
   models.Employee.findAndCountAll(
@@ -256,7 +264,7 @@ exports.index = async (req, res) => {
   ).then((typeCount) =>
   
   {
-    res.render('pages/index', { title: 'DASHBOARD', amountSum, topExpenses, deptExpense, employeeCount,expenseCats, expenseCount, expenseTypes, categoryCount, expenseDepts, latest, moment, typeCount, layout: 'layouts/main'});
+    res.render('pages/index', { title: 'DASHBOARD',employeeCount, expenseCount, categoryCount, typeCount, amountSum,  latest, moment, expenseDepts, topExpenses, expenseCats, deptExpense,  /*expenseTypes, */  layout: 'layouts/main'});
   });
   });
   });

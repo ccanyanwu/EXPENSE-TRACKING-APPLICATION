@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
   //create association between category and expense
   // a category can have more than 1 expense
   Category.associate = (models) => {
-    models.Category.hasMany(models.Expense);
+    models.Category.belongsToMany(models.Expense,{ 
+      as: 'expenses', 
+      through: 'ExpenseCategory',
+      foreignKey: 'category_id'
+    });
   };
 
   return Category;

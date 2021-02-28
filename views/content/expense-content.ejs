@@ -17,11 +17,11 @@
             <form action="" method="post" class="w-50  mx-auto">
               <input class="iw" type="text" name="details" placeholder="expense detail" value="<%= locals.details ?  details : "" %>">
               <input class="iw" type="number" name="amount" placeholder="amount e.g 2000" value="<%= locals.amount ?  amount : "" %>">
-              <select class="iw" name = "employee_id" class="form-control" disabled>
+              <select class="iw" name = "employee_id" class="form-control" >
                 <option class="text-capitalize"  value="<%= employee.id %>" ><%= employee.first_name %> <%= employee.last_name %></option>
                 <br/>
               </select>
-              <select class="iw" name = "department_id" class="form-control" disabled>
+              <select class="iw" name = "department_id" class="form-control" >
                 <% departments.forEach((department) => { %>
                   <% if(department.id == employee.DepartmentId){ %> 
                     <option  value="<%= department.id %>"><%= department.name %></option>
@@ -37,13 +37,15 @@
                 <br/>
                 <% }); %>
               </select>
-              <label for="category_id"><strong class="">Category</strong></label>
-              <select class="iw" name = "category_id" class="form-control">
-                <% categories.forEach((category) => { %>
-                <option  value="<%= category.id %>"><%= category.name %></option>
-                <br/>
+              <label for="categories"><strong class="">Category</strong></label>
+              <div>
+                <% categories.forEach(function(category) { %>
+                <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+                <label class="text-dark" for="<%= category.name %>"><%= category.name %></label>
+                
+            <br/>
                 <% }); %>
-              </select>
+            </div>
               <input class="ib" type="submit" value="Create Expense">
             </form>
         </div>
@@ -102,12 +104,7 @@
                 <br/>
                 <% }); %>
               </select>
-              <select class="iw" name = "category_id" class="form-control">
-                <% categories.forEach((category) => { %>
-                <option  value="<%= category.id %>"><%= category.name %></option>
-                <br/>
-                <% }); %>
-              </select>
+              
               <input class="ib" type="submit" value="Update Expense">
             </form>
         </div>
@@ -123,7 +120,13 @@
              <p><%= expense.Employee.first_name%>'s Role - <strong><span class="text-uppercase"><%= expense.Employee.role %></strong></span> </p>
              <p>Department - <strong><%= expense.Department.name %></strong></p>
              <p>Type - <strong><%= expense.Type.name %></strong></p>
-             <p>Category - <strong><%= expense.Category.name %></strong></p>
+             <p><strong>Categories</strong> - 
+                <ol>
+                  <% expense.categories.forEach(category => { %> 
+                      <li class="text-dark"><%= category.name %></li>
+                    <%}) %>
+                  </ol>
+             </p>
              <p>
                <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/update" class="badge badge-success ">Edit</a>
                <a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>/delete" class="badge badge-danger ">Delete</a>
@@ -136,10 +139,10 @@
       <h2 class="display-4 mb-5">All Expenses Created</h2>
         <div class="">
         <ol>
-        <% expenses.forEach(function(expense) { %>
+        <% expenses.forEach((expense) => { %>
                 <div class="row">
                   <li class="col-10">
-                      <h4 class="text-capitalize"><a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>"><%= expense.details %></a></h4>
+                      <h4 class="text-capitalize"></h4><a href="/employee/<%= expense.Employee.id %>/expense/<%= expense.id %>"><%= expense.details %></a></h4>
                       <p><strong>Status</strong> - <%= expense.status %></p>
                   </li>
                   <div class="col-2 ml-auto">
@@ -154,3 +157,21 @@
 <% } else { %>
 
 <% } %>
+
+<!--script for the category check function-->
+<script>
+  function checkCat() {
+  var checkBoxes = document.getElementsByClassName( 'categoryCheckbox' );
+  var isChecked = false;
+  for (var i = 0; i < checkBoxes.length; i++) {
+      if ( checkBoxes[i].checked ) {
+          isChecked = true;
+      };
+  };
+  if ( isChecked ) {
+      
+      } else {
+          alert( 'Please, check at least one checkbox!' );
+      }   
+}
+</script>
