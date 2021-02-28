@@ -173,6 +173,40 @@ exports.expense_update_post =[ urlencodedParser,
         res.render('forms/expense_form', { title: 'Update Expense', categories, departments, expense, notice, types, layout: 'layouts/detail'});
       } else{
 
+        // find the post
+        const expense = await models.Expense.findById(req.params.expense_id);
+        
+        // Find and remove all associations 
+        const categories = await expense.getCategories();
+        //expense.removeCategories(categories);
+
+        let categoryList = req.body.categories;
+
+        // I am checking if only 1 category has been selected
+        // if only one category then use the simple case scenario
+        if (categoryList.length == 1) {
+          // check if we have that category in our database
+          const category = await models.Category.findById(req.body.categories);
+          if (!category) {
+           return res.status(400);
+          }
+          //otherwise add new entry inside PostCategory table
+          await expense.addCategory(category);
+          }
+          // if more than one category has been selected
+          else {
+          // Loop through all the ids in req.body.categories i.e. the selected categories
+          await req.body.categories.forEach(async (id) => {
+              // check if all category selected are in the database
+              const category = await models.Category.findById(id);
+              if (!category) {
+                return res.status(400);
+              }
+              // add to PostCategory after
+              await expense.addCategory(category);
+              });
+          }
+
           //logic for expense status
           let getAmount = req.body.amount,
               getStatus = '';
@@ -186,7 +220,6 @@ exports.expense_update_post =[ urlencodedParser,
                   amount: getAmount,
                   DepartmentId: req.body.department_id,
                   TypeId: req.body.type_id,
-                  CategoryId: req.body.category_id,
                   status:getStatus
               },
             { // Clause

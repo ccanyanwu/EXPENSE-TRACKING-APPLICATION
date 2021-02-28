@@ -104,6 +104,14 @@
                 <br/>
                 <% }); %>
               </select>
+              <label for="categories"><strong class="">Category</strong></label>
+              <div>
+                <% categories.forEach(function(category) { %>
+                <input type="checkbox" class='categoryCheckbox' name="categories" id="<%= category.id %>" value="<%= category.id %>">
+                <label class="text-dark" for="<%= category.name %>"><%= category.name %></label>
+                
+            <br/>
+                <% }); %>
               
               <input class="ib" type="submit" value="Update Expense">
             </form>
