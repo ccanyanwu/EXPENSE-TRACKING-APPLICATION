@@ -16,6 +16,7 @@
         <p class="text-left fwb">Total Types of Expenses in database</p>
         <p class="text-right fwb"><%= typeCount.count %></p> 
     </div>
+
     <!--total amount spent till date-->
     <div class="col-sm-12 col-md-3 neomorphism mx-4 my-3 p-2">
         <p class="text-left fwb">Total Amount spent till date</p>
@@ -37,33 +38,9 @@
                 <p class="text-right fwb">&#8358;<%= latest.amount %> </p> 
         <%} %>
     </div>
-    <!--Expenses Based on Category-->
-    <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
-        <p class="display-4 fwb fs bg-dark p-2 w-50 text-white">Expenses Listed by Category</p>
-        <% if(expenseCats.length == 0){%>
-            <p>No expense has been added based on category yet</p>
-           <%}
-           else {%> 
-        
-        <% expenseCats.forEach(expenseCat => { %> 
-            <p class="fwb text-uppercase"><%= expenseCat.name %></p>
-            <%if(expenseCat.Expenses.length == 0){%> 
-                <p>There are no expenses in the <%= expenseCat.name %>  category yet</p>
-            <%}else{%> 
-                <ol>
-                <% expenseCat.Expenses.forEach(item => { %> 
-                    <li><%= item.details %></li>
-                <%}) %>
-                </ol>
-            <%}
-            %>
-        <% })
-        %> 
-        <%} %>
-    </div>
 
-     <!--Expenses Listed by Department-->
-     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
+    <!--Expenses Listed by Department-->
+    <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
         <p class="display-4 fwb fs bg-dark p-2 w-50 text-white">Expenses Listed by Department</p>
         <% if(expenseDepts.length == 0){%>
             <p>No expense has been added under any Department yet</p>
@@ -86,7 +63,32 @@
         %> 
         <%} %>
     </div>
-   
+
+    <!--Expenses Based on Category-->
+    <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
+        <p class="display-4 fwb fs bg-dark p-2 w-50 text-white">Expenses Listed by Category</p>
+        <% if(expenseCats.length == 0){%>
+            <p>No expense has been added based on category yet</p>
+           <%}
+           else {%> 
+        
+        <% expenseCats.forEach(expenseCat => { %> 
+            <p class="fwb text-uppercase"><%= expenseCat.name %></p>
+            <%if(expenseCat.expenses.length == 0){%> 
+                <p>There are no expenses in the <%= expenseCat.name %>  category yet</p>
+            <%}else{%> 
+                <ol>
+                <% expenseCat.expenses.forEach(item => { %> 
+                    <li><%= item.details %></li>
+                <%}) %>
+                </ol>
+            <%}
+            %>
+        <% })
+        %> 
+        <%} %>
+    </div>
+
     <!--TOP 5 EXPENSES-->
     <div class="col-sm-12 col-md-10 mx-4 my-3 p-2">
         <p class="fwb display-4 fs bg-dark p-2 w-25 text-white">Top 5 expenses</p>
@@ -103,7 +105,7 @@
         <%} %>
     </div>
 
-    <!--Total Expense made by each Department-->
+    <!--total amount spent per department-->
     <div class="col-sm-12 col-md-10  mx-4 my-3 p-2">
         <p class="display-4 fwb fs bg-dark p-2 w-75 text-white">Total Amount Spent By Each Department</p>
         <% if(deptExpense.length == 0){%>
@@ -119,8 +121,7 @@
                         <% })
                         %> 
                     </ol>
-        
-        
-        <%} %>
+            <%} %>
     </div>
+
 </div>

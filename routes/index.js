@@ -138,3 +138,4 @@ router.get('/type/:type_id', type_controller.type_detail);
 router.get('/', employee_controller.index);
 
 module.exports = router;
+

@@ -32,7 +32,7 @@ exports.expense_create_get =  async (req, res, next) => {
 };
 
 // Handle expense create on POST.
-exports.expense_create_post =[ urlencodedParser,
+exports.expense_create_post = [ urlencodedParser,
   [
     check('details', 'details field cannot be empty and must be at least 3 characters long').exists().isLength({min: 3}),
     check('amount', 'enter a valid amount').isNumeric().exists()
@@ -49,7 +49,8 @@ exports.expense_create_post =[ urlencodedParser,
       req.params.employee_id, {
       include: [
         {
-          model: models.Expense
+          model: models.Expense,
+          attributes: ['id']
         }
        ]
       }
@@ -69,6 +70,9 @@ exports.expense_create_post =[ urlencodedParser,
     } else {
       let employee_id = req.body.employee_id;
       
+      //category list
+      let categoryList = req.body.categories;
+
     //logic to check for amount and set status
     let getAmount = req.body.amount,
         getStatus = '';
@@ -76,18 +80,47 @@ exports.expense_create_post =[ urlencodedParser,
         if(getAmount < 1000){getStatus = 'approved';}
         else{getStatus = 'pending'}
       
-       models.Expense.create({
+     let expense = await models.Expense.create({
              details: req.body.details,
              amount: req.body.amount,
              EmployeeId: req.body.employee_id,
              DepartmentId: req.body.department_id,
              TypeId: req.body.type_id,
-             CategoryId: req.body.category_id,
              status: getStatus,
   
-         }).then(() => {
-             res.redirect('/employee/' + employee_id);
-       });
+         });
+
+
+         //checking if only 1 category has been selected
+        // if only one category then use the simple case scenario
+        if (categoryList.length == 1) {
+             // check if we have that category in our database
+             const category = await models.Category.findById(req.body.categories);
+             if (!category) {
+              return res.status(400);
+             }
+             //otherwise add new entry inside PostCategory table
+             await expense.addCategory(category);
+
+             //redirect to employee detail page
+            res.redirect('/employee/' + employee_id);
+        } else {
+          // Loop through all the ids in req.body.categories i.e. the selected categories
+          await req.body.categories.forEach(async (id) => {
+              // check if all category selected are in the database
+              const category = await models.Category.findById(id);
+              if (!category) {
+                return res.status(400);
+              }
+              // add to PostCategory after
+              await expense.addCategory(category);
+              });
+              //redirect to employee detail page
+            res.redirect('/employee/' + employee_id);
+          }
+             
+            //redirect to employee detail page
+            //res.redirect('/employee/' + employee_id);
     }
     
     
@@ -184,9 +217,34 @@ exports.expense_review_get = async (req, res, next) => {
 };
 
 // Handle EXPENSE review on POST.
-exports.expense_review_post = function(req, res, next) {
-  // POST logic to review an expense status
-  console.log("ID is " + req.params.expense_id);
+exports.expense_review_post = async (req, res, next) => {
+  //find the expense
+  let expense = await models.Expense.findById(req.params.expense_id);
+
+  let categoryList = req.body.categories;
+
+  if (categoryList.length == 1) {
+    // check if we have that category in our database
+    const category = await models.Category.findById(req.body.categories);
+    if (!category) {
+     return res.status(400);
+    }
+    //otherwise add new entry inside ExpenseCategory table
+    await expense.addCategory(category);
+    }// if more than one category has been selected
+    else {
+      // Loop through all the ids in req.body.categories i.e. the selected categories
+      await req.body.categories.forEach(async (id) => {
+          // check if all category selected are in the database
+          const category = await models.Category.findById(id);
+          if (!category) {
+            return res.status(400);
+          }
+          // add to PostCategory after
+          await expense.addCategory(category);
+          });
+      }
+
   //logic for expense status
   models.Expense.update(
   // Values to update
@@ -209,12 +267,13 @@ exports.expense_list = async (req, res, next) => {
   models.Expense.findAll({
     include:[
       {
-        model:models.Employee,
+        model: models.Employee,
         attributes: ['id', 'first_name'],
       }
     ],
   }).then((expenses) => {
   // renders an employee list page
+  console.log(`I AM ${JSON.stringify(expenses)}`)
   res.render('pages/expense_list', { title: 'Expense List', expenses, layout: 'layouts/list'} );
   });
 };
@@ -229,16 +288,25 @@ exports.expense_detail = (req, res, next) => {
               attributes: ['id', 'first_name', 'last_name', 'role',]
             },
             {
-              model: models.Category,
-              attributes: ['id', 'name']
-            },
-            {
               model: models.Department,
               attributes: ['id', 'name']
             },
             {
               model: models.Type,
               attributes: ['id', 'name']
+            },
+            {
+              model: models.Category,
+              as: 'categories',
+              required: false,
+              // Pass in the Category attributes that you want to retrieve
+              attributes: ['id', 'name'],
+              through: {
+                // This block of code allows you to retrieve the properties of the join table ExpenseCategory
+                model: models.ExpenseCategory,
+                as: 'ExpenseCategory',
+                attributes: ['expense_id', 'category_id'],
+              }
             }
           ]
           }
